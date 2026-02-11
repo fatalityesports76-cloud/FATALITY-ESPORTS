@@ -16,6 +16,26 @@ npm run deploy:auto
 
 Enquanto esse comando estiver rodando, qualquer edicao salva sera publicada automaticamente.
 
+## Iniciar sozinho ao ligar o PC (Windows)
+
+Instala tarefa automatica para iniciar no login do Windows:
+
+```powershell
+cmd /c npm run autostart:install
+```
+
+Executar agora (sem reiniciar):
+
+```powershell
+cmd /c npm run autostart:run-now
+```
+
+Remover automacao:
+
+```powershell
+cmd /c npm run autostart:remove
+```
+
 ## Publicar uma vez so
 
 ```powershell
