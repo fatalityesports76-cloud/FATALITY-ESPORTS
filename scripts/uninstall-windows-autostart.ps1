@@ -1,12 +1,12 @@
 $ErrorActionPreference = "Stop"
 
-$taskName = "Fatality-AutoStart-Deploy-Server"
+$startupDir = [Environment]::GetFolderPath("Startup")
+$launcherPath = Join-Path $startupDir "Fatality-AutoStart.cmd"
 
-$task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-if ($null -eq $task) {
-  Write-Output "Tarefa nao existia: $taskName"
+if (-not (Test-Path $launcherPath)) {
+  Write-Output "Launcher nao existia: $launcherPath"
   exit 0
 }
 
-Unregister-ScheduledTask -TaskName $taskName -Confirm:$false | Out-Null
-Write-Output "Tarefa removida: $taskName"
+Remove-Item -Path $launcherPath -Force
+Write-Output "Inicializacao automatica removida: $launcherPath"
