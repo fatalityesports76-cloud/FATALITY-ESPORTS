@@ -1244,6 +1244,143 @@ function initOrgAccess() {
     });
   }
 
+  function updateAdminDashboardMetrics(items) {
+    if (!orgAdminDashboard) {
+      return;
+    }
+
+    const list = Array.isArray(items) ? items : [];
+    const total = list.length;
+    const verified = list.filter((item) => item && item.emailVerifiedAt).length;
+    const pending = Math.max(0, total - verified);
+    const leadership = list.filter((item) => {
+      const role = String(item?.role || "");
+      return role === "dono" || role === "lider" || role === "vice_lider" || role === "adm";
+    }).length;
+
+    if (orgKpiTotal) {
+      orgKpiTotal.textContent = String(total);
+    }
+    if (orgKpiVerified) {
+      orgKpiVerified.textContent = String(verified);
+    }
+    if (orgKpiPending) {
+      orgKpiPending.textContent = String(pending);
+    }
+    if (orgKpiLeadership) {
+      orgKpiLeadership.textContent = String(leadership);
+    }
+  }
+
+  function getFilteredMemberStatuses(items) {
+    const list = Array.isArray(items) ? items : [];
+    const search = String(orgMemberSearchInput?.value || "")
+      .trim()
+      .toLowerCase();
+    const roleFilter = String(orgMemberFilterRole?.value || "").trim().toLowerCase();
+    const emailFilter = String(orgMemberFilterEmail?.value || "").trim().toLowerCase();
+
+    return list.filter((item) => {
+      if (!item) {
+        return false;
+      }
+
+      if (roleFilter && String(item.role || "").toLowerCase() !== roleFilter) {
+        return false;
+      }
+
+      if (emailFilter === "verified" && !item.emailVerifiedAt) {
+        return false;
+      }
+      if (emailFilter === "pending" && item.emailVerifiedAt) {
+        return false;
+      }
+
+      if (!search) {
+        return true;
+      }
+
+      const searchable = [
+        item.userNumber,
+        item.credentialNumber,
+        item.fullName,
+        item.email,
+        item.inGameName,
+        item.gameId,
+        item.serverId,
+        item.whatsapp
+      ]
+        .map((value) => String(value || "").toLowerCase())
+        .join(" ");
+      return searchable.includes(search);
+    });
+  }
+
+  function getMemberByUserNumber(userNumber) {
+    const target = String(userNumber || "").trim();
+    if (!target) {
+      return null;
+    }
+    return memberStatusSnapshot.find((item) => String(item?.userNumber || "").trim() === target) || null;
+  }
+
+  function canEditMemberProfile(item) {
+    const actorRole = String(currentSession?.role || "");
+    if (!isApprovalRole(actorRole)) {
+      return false;
+    }
+
+    const targetRole = String(item?.role || "");
+    const actorAssignableRoles = new Set(assignableRolesForRole(actorRole));
+    return actorAssignableRoles.has(targetRole);
+  }
+
+  function openMemberEditModal(item) {
+    if (!orgMemberEditModal || !orgMemberEditForm || !item) {
+      return;
+    }
+
+    const userNumber = String(item.userNumber || "");
+    orgMemberEditForm.reset();
+    orgMemberEditForm.querySelector("input[name='userNumber']").value = userNumber;
+    orgMemberEditForm.querySelector("input[name='fullName']").value = String(item.fullName || "");
+    orgMemberEditForm.querySelector("input[name='email']").value = String(item.email || "");
+    orgMemberEditForm.querySelector("input[name='inGameName']").value = String(item.inGameName || "");
+    orgMemberEditForm.querySelector("input[name='gameId']").value = String(item.gameId || "");
+    orgMemberEditForm.querySelector("input[name='serverId']").value = String(item.serverId || "");
+    orgMemberEditForm.querySelector("input[name='whatsapp']").value = String(item.whatsapp || "");
+    orgMemberEditForm.querySelector("select[name='identificacaoGenero']").value = String(
+      item.identificacaoGenero || "Prefiro nao informar"
+    );
+    orgMemberEditForm.querySelector("input[name='note']").value = String(item.note || "");
+
+    if (orgMemberEditLead) {
+      orgMemberEditLead.textContent =
+        `Editando credencial ${userNumber} (${roleLabelFromValue(item.role)}). Salve para aplicar.`;
+    }
+
+    orgMemberEditModal.classList.remove("hidden");
+    orgMemberEditModal.hidden = false;
+    orgMemberEditModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeMemberEditModal() {
+    if (!orgMemberEditModal || !orgMemberEditForm) {
+      return;
+    }
+
+    orgMemberEditForm.reset();
+    orgMemberEditModal.classList.add("hidden");
+    orgMemberEditModal.hidden = true;
+    orgMemberEditModal.setAttribute("aria-hidden", "true");
+  }
+
+  function rerenderMemberStatusesFromSnapshot() {
+    updateAdminDashboardMetrics(memberStatusSnapshot);
+    const filtered = getFilteredMemberStatuses(memberStatusSnapshot);
+    renderMemberStatuses(filtered);
+  }
+
   function renderMemberStatuses(items) {
     if (!orgMembersList) {
       return;
