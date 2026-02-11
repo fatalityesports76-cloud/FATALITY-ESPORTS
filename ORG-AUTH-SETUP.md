@@ -9,6 +9,9 @@
 - Arquivo gerado automaticamente:
   - `secrets/org-owner-bootstrap.txt`
 - Troque a senha no primeiro login.
+- Para ambiente sem disco persistente (ex.: Render free), fixe a senha do dono por env:
+  - `ORG_OWNER_PASSWORD_900001=SUA_SENHA`
+  - `ORG_OWNER_PASSWORD_900002=SUA_SENHA` (opcional)
 
 ## 3) Fluxo de cadastro/aprovacao
 - Usuario preenche cadastro com: funcao, email, nome completo, nome no jogo, ID e Server ID.
