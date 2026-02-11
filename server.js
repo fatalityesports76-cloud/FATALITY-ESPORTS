@@ -2011,6 +2011,7 @@ app.get("/api/org/admin/users", requireOrgSession, requireOrgRole(ORG_APPROVAL_R
       serverId: item.serverId || "",
       whatsapp: item.whatsapp || "",
       identificacaoGenero: item.identificacaoGenero || "Prefiro nao informar",
+      note: item.note || "",
       email: item.email || "",
       role: item.role,
       status: item.status,
