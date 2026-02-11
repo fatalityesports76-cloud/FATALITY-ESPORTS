@@ -3580,6 +3580,14 @@ body.mobile-performance .reveal.visible {
     padding: 0.38rem 0.26rem;
   }
 
+  .org-admin-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .org-admin-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .card-grid {
     grid-template-columns: 1fr;
   }
@@ -3636,6 +3644,14 @@ body.mobile-performance .reveal.visible {
   .org-owner-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .org-admin-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .org-admin-toolbar {
+    grid-template-columns: 1fr;
   }
 
   .org-performance-grid {
@@ -3776,6 +3792,12 @@ body.mobile-performance .reveal.visible {
     border-radius: 16px;
     padding: 0.6rem 0.8rem;
     font-size: 0.9rem;
+  }
+
+  .org-member-edit-card {
+    width: min(560px, calc(100% - 0.8rem));
+    max-height: min(92vh, 720px);
+    padding: 0.58rem;
   }
 }
 
