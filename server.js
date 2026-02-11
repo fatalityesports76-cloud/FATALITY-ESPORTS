@@ -564,6 +564,28 @@ const orgDirectCreateUserSchema = z.object({
   note: z.string().trim().max(240).optional().default("")
 });
 
+const orgUpdateUserProfileSchema = z.object({
+  fullName: z.string().trim().min(5).max(120),
+  inGameName: z.string().trim().min(2).max(40),
+  gameId: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{4,20}$/),
+  serverId: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{3,20}$/),
+  email: z.string().trim().toLowerCase().email().max(120),
+  whatsapp: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{10,20}$/)
+    .optional()
+    .default(""),
+  identificacaoGenero: z.enum(ORG_IDENTIFICATION_VALUES).optional().default("Prefiro nao informar"),
+  note: z.string().trim().max(240).optional().default("")
+});
+
 const orgPerformanceScoresSchema = z.object({
   disciplina: z.number().min(0).max(10),
   comunicacao: z.number().min(0).max(10),
