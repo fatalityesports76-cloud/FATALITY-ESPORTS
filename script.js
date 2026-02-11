@@ -2793,6 +2793,21 @@ function initOrgAccess() {
         orgOwnerTools.classList.add("hidden");
         orgOwnerTools.hidden = true;
       }
+      if (orgAdminDashboard) {
+        orgAdminDashboard.classList.add("hidden");
+        orgAdminDashboard.hidden = true;
+      }
+      memberStatusSnapshot = [];
+      if (orgMemberSearchInput) {
+        orgMemberSearchInput.value = "";
+      }
+      if (orgMemberFilterRole) {
+        orgMemberFilterRole.value = "";
+      }
+      if (orgMemberFilterEmail) {
+        orgMemberFilterEmail.value = "";
+      }
+      closeMemberEditModal();
       if (orgAdvancedOps) {
         orgAdvancedOps.classList.add("hidden");
         orgAdvancedOps.hidden = true;
@@ -2893,11 +2908,19 @@ function initOrgAccess() {
       if (isApprovalRole(session.role)) {
         orgOwnerTools.classList.remove("hidden");
         orgOwnerTools.hidden = false;
+        if (orgAdminDashboard) {
+          orgAdminDashboard.classList.remove("hidden");
+          orgAdminDashboard.hidden = false;
+        }
         void refreshOwnerRequests();
         void refreshMemberStatuses();
       } else {
         orgOwnerTools.classList.add("hidden");
         orgOwnerTools.hidden = true;
+        if (orgAdminDashboard) {
+          orgAdminDashboard.classList.add("hidden");
+          orgAdminDashboard.hidden = true;
+        }
       }
     }
 
