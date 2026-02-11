@@ -104,6 +104,53 @@
             <button class="btn btn-secondary org-owner-refresh" type="button" data-org-members-refresh>Atualizar</button>
           </div>
           <div class="org-owner-list" data-org-members-list></div>
+          <div class="org-admin-dashboard hidden" data-org-admin-dashboard hidden>
+            <div class="org-admin-kpis">
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-total>0</p>
+                <p class="org-admin-kpi-label">Membros ativos</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-verified>0</p>
+                <p class="org-admin-kpi-label">E-mail verificado</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-pending>0</p>
+                <p class="org-admin-kpi-label">E-mail pendente</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-leadership>0</p>
+                <p class="org-admin-kpi-label">Liderança ativa</p>
+              </article>
+            </div>
+            <div class="org-admin-toolbar">
+              <label>
+                Buscar membro
+                <input type="search" data-org-member-search maxlength="120" placeholder="Nome, credencial, e-mail ou nick">
+              </label>
+              <label>
+                Filtrar por cargo
+                <select data-org-member-filter-role>
+                  <option value="">Todos</option>
+                  <option value="dono">Dono</option>
+                  <option value="lider">Líder</option>
+                  <option value="vice_lider">Vice-líder</option>
+                  <option value="adm">ADM</option>
+                  <option value="staff">Staff</option>
+                  <option value="player">Player</option>
+                </select>
+              </label>
+              <label>
+                Verificação de e-mail
+                <select data-org-member-filter-email>
+                  <option value="">Todos</option>
+                  <option value="verified">Verificado</option>
+                  <option value="pending">Pendente</option>
+                </select>
+              </label>
+              <button class="btn btn-secondary" type="button" data-org-member-clear-filters>Limpar filtros</button>
+            </div>
+          </div>
           <div class="org-owner-head">
             <p class="org-owner-title">Cadastro direto de membro</p>
           </div>
@@ -330,6 +377,67 @@
       </div>
     </div>
   </section>
+
+  <div class="org-member-edit-modal hidden" data-org-member-edit-modal hidden aria-hidden="true">
+    <div class="org-member-edit-backdrop" data-org-member-edit-cancel></div>
+    <div class="org-member-edit-card" role="dialog" aria-modal="true" aria-label="Atualizar cadastro de membro">
+      <p class="org-owner-title">Atualizar cadastro de membro</p>
+      <p class="org-access-state" data-org-member-edit-lead>Revise e atualize os dados do cadastro.</p>
+      <form class="org-access-form" data-org-member-edit-form novalidate>
+        <input type="hidden" name="userNumber">
+        <label>
+          Nome completo
+          <input type="text" name="fullName" minlength="5" maxlength="120" required>
+        </label>
+        <label>
+          E-mail
+          <input type="email" name="email" maxlength="120" required>
+        </label>
+        <label>
+          Nome no jogo
+          <input type="text" name="inGameName" minlength="2" maxlength="40" required>
+        </label>
+        <label>
+          ID no jogo
+          <input type="text" name="gameId" inputmode="numeric" pattern="^[0-9]{4,20}$" required>
+        </label>
+        <label>
+          ID do servidor
+          <input type="text" name="serverId" inputmode="numeric" pattern="^[0-9]{3,20}$" required>
+        </label>
+        <label>
+          WhatsApp (somente números)
+          <input type="text" name="whatsapp" inputmode="numeric" pattern="^[0-9]{10,20}$">
+        </label>
+        <label>
+          Como a pessoa se identifica
+          <select name="identificacaoGenero" required>
+            <option value="">Selecione</option>
+            <option value="Homem cisgenero">Homem cisgênero</option>
+            <option value="Mulher cisgenero">Mulher cisgênero</option>
+            <option value="Homem trans">Homem trans</option>
+            <option value="Mulher trans">Mulher trans</option>
+            <option value="Transexual">Transexual</option>
+            <option value="Travesti">Travesti</option>
+            <option value="Nao binario">Não binário</option>
+            <option value="Genero fluido">Gênero fluido</option>
+            <option value="Agenero">Agênero</option>
+            <option value="Intersexo">Intersexo</option>
+            <option value="Outro">Outro</option>
+            <option value="Prefiro nao informar">Prefiro não informar</option>
+          </select>
+        </label>
+        <label>
+          Observação
+          <input type="text" name="note" maxlength="240" placeholder="Opcional">
+        </label>
+        <div class="org-register-review-actions">
+          <button class="btn btn-primary" type="submit">Salvar atualização</button>
+          <button class="btn btn-secondary" type="button" data-org-member-edit-cancel>Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer class="section footer" id="contato">
     <p class="copyright">
