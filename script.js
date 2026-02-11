@@ -24,7 +24,17 @@ const isNarrowViewport = supportsMatchMedia
   ? window.matchMedia("(max-width: 900px)").matches
   : window.innerWidth <= 900;
 const hasLowCpuBudget = Number(navigator.hardwareConcurrency || 8) <= 6;
-const shouldUseMobilePerformanceMode = isCoarsePointer || (isNarrowViewport && hasLowCpuBudget);
+const hasLowMemoryBudget = Number(navigator.deviceMemory || 8) <= 4;
+const prefersReducedMotion = supportsMatchMedia
+  ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  : false;
+const prefersReducedData = Boolean(navigator.connection && navigator.connection.saveData);
+const shouldUseMobilePerformanceMode =
+  isCoarsePointer ||
+  isNarrowViewport ||
+  hasLowCpuBudget ||
+  hasLowMemoryBudget ||
+  prefersReducedData;
 
 if (shouldUseMobilePerformanceMode) {
   document.documentElement.classList.add("mobile-performance");
@@ -84,16 +94,15 @@ function initPhoenixEmitter() {
     return;
   }
 
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   if (prefersReducedMotion) {
     return;
   }
 
   const sparkCount = shouldUseMobilePerformanceMode
-    ? 10
+    ? 0
     : window.matchMedia?.("(max-width: 760px)").matches
-      ? 24
-      : 44;
+      ? 8
+      : 18;
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < sparkCount; i += 1) {
@@ -120,16 +129,18 @@ function initParticleField() {
     return;
   }
 
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   if (prefersReducedMotion) {
     return;
   }
 
   const particleCount = shouldUseMobilePerformanceMode
-    ? 10
+    ? 0
     : window.matchMedia?.("(max-width: 760px)").matches
-      ? 34
-      : 74;
+      ? 14
+      : 30;
+  if (particleCount <= 0) {
+    return;
+  }
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < particleCount; i += 1) {
@@ -174,8 +185,18 @@ let securityContext = null;
 const cookieConsentStorageKey = "fatality_cookie_consent_v1";
 let cookieConsentOverlay = null;
 
-initParticleField();
-initPhoenixEmitter();
+function runWhenIdle(callback) {
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(callback, { timeout: 1200 });
+    return;
+  }
+  window.setTimeout(callback, 220);
+}
+
+runWhenIdle(() => {
+  initParticleField();
+  initPhoenixEmitter();
+});
 initSelectionStepper();
 initNavigationHighlight();
 initCookieConsent();
