@@ -2938,6 +2938,9 @@ function initOrgAccess() {
   }
 
   sanitizeNumericInputs(orgAccessRoot);
+  if (orgMemberEditModal) {
+    sanitizeNumericInputs(orgMemberEditModal);
+  }
   buildPerformanceScoreInputs();
   const verificationCodeInputs = [
     orgLoginVerifyForm.querySelector("input[name='code']"),
