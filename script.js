@@ -1434,7 +1434,8 @@ function initOrgAccess() {
           ["Troca de senha pendente", item.mustChangePassword ? "Sim" : "Não"],
           ["Senha provisória atual", item.temporaryPassword || "-"],
           ["Senha provisória atualizada em", formatDateTime(item.temporaryPasswordUpdatedAt)],
-          ["Status e-mail", statusText]
+          ["Status e-mail", statusText],
+          ["Observacao", item.note || "-"]
         ];
 
         fields.forEach(([label, value]) => {
@@ -1456,8 +1457,9 @@ function initOrgAccess() {
           actorUserNumber !== memberUserNumber &&
           actorAssignableRoles.has(String(item.role || ""));
         const canSendReminder = isApprovalRole(actorRole) && !item.emailVerifiedAt;
+        const canEditProfile = canEditMemberProfile(item);
 
-        if (canManageMemberRole || canSendReminder) {
+        if (canManageMemberRole || canSendReminder || canEditProfile) {
           const actions = document.createElement("div");
           actions.className = "org-owner-actions";
 
@@ -1489,6 +1491,16 @@ function initOrgAccess() {
             removeBtn.dataset.memberRole = String(item.role || "");
             removeBtn.textContent = "Remover membro";
             actions.appendChild(removeBtn);
+          }
+
+          if (canEditProfile) {
+            const editBtn = document.createElement("button");
+            editBtn.className = "btn btn-secondary";
+            editBtn.type = "button";
+            editBtn.dataset.memberUserNumber = memberUserNumber;
+            editBtn.dataset.memberAction = "edit-profile";
+            editBtn.textContent = "Atualizar cadastro";
+            actions.appendChild(editBtn);
           }
 
           wrapper.appendChild(actions);
