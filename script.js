@@ -3702,6 +3702,22 @@ function initOrgAccess() {
         return;
       }
 
+      if (action === "edit-profile") {
+        const member = getMemberByUserNumber(memberUserNumber);
+        if (!member) {
+          setState("Membro nao encontrado para atualizar cadastro.", "#ffb3c0");
+          return;
+        }
+
+        if (!canEditMemberProfile(member)) {
+          setState("Seu cargo nao possui permissao para atualizar este cadastro.", "#ffb3c0");
+          return;
+        }
+
+        openMemberEditModal(member);
+        return;
+      }
+
       if (action === "remove-member") {
         const memberRole = String(target.dataset.memberRole || "").trim();
         const confirmRemove = window.confirm(
