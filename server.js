@@ -2206,6 +2206,148 @@ app.post(
 );
 
 app.post(
+  "/api/org/admin/users/:userNumber/update-profile",
+  orgWriteLimiter,
+  requireCsrf,
+  requireOrgSession,
+  requireOrgRole(ORG_APPROVAL_ROLES),
+  (req, res) => {
+    const targetUserNumber = String(req.params.userNumber || "").trim();
+    if (!/^[0-9]{4,12}$/.test(targetUserNumber)) {
+      apiError(res, 400, "Credencial invalida.");
+      return;
+    }
+
+    const parsed = orgUpdateUserProfileSchema.safeParse(req.body || {});
+    if (!parsed.success) {
+      apiError(res, 400, "Dados invalidos para atualizacao de cadastro.");
+      return;
+    }
+
+    const payload = parsed.data;
+    const nowIso = new Date().toISOString();
+    let updatedUser = null;
+    let previousEmail = "";
+    let emailChanged = false;
+
+    const result = updateOrgStore((store) => {
+      const targetUser = store.users.find(
+        (item) => item.userNumber === targetUserNumber && item.status === "active"
+      );
+      if (!targetUser) {
+        return { error: "Membro nao encontrado.", statusCode: 404 };
+      }
+
+      if (!canAssignOrgRole(req.orgSession.role, targetUser.role)) {
+        return { error: "Seu cargo nao tem permissao para atualizar este membro.", statusCode: 403 };
+      }
+
+      const emailInUse = store.users.some((item) => {
+        return (
+          item.status === "active" &&
+          item.id !== targetUser.id &&
+          safeStringEquals(String(item.email || "").toLowerCase(), payload.email)
+        );
+      });
+      if (emailInUse) {
+        return { error: "Ja existe membro ativo com este e-mail.", statusCode: 409 };
+      }
+
+      previousEmail = String(targetUser.email || "");
+      emailChanged = !safeStringEquals(previousEmail.toLowerCase(), payload.email);
+
+      targetUser.fullName = payload.fullName;
+      targetUser.inGameName = payload.inGameName;
+      targetUser.gameId = payload.gameId;
+      targetUser.serverId = payload.serverId;
+      targetUser.whatsapp = payload.whatsapp || "";
+      targetUser.identificacaoGenero = payload.identificacaoGenero || "Prefiro nao informar";
+      targetUser.note = payload.note || "";
+      targetUser.email = payload.email;
+      if (emailChanged) {
+        targetUser.emailVerifiedAt = null;
+      }
+      targetUser.updatedAt = nowIso;
+
+      updatedUser = targetUser;
+      return { ok: true };
+    });
+
+    if (!result.ok || !updatedUser) {
+      apiError(res, result.statusCode || 409, result.error || "Nao foi possivel atualizar cadastro.");
+      return;
+    }
+
+    for (const session of orgSessions.values()) {
+      if (session.userId === updatedUser.id) {
+        session.email = updatedUser.email;
+        session.emailVerifiedAt = updatedUser.emailVerifiedAt || null;
+      }
+    }
+
+    if (safeStringEquals(req.orgSession.userNumber, updatedUser.userNumber)) {
+      req.orgSession.email = updatedUser.email;
+      req.orgSession.emailVerifiedAt = updatedUser.emailVerifiedAt || null;
+    }
+
+    const updateMessage =
+      `Atualizacao Fatality: seu cadastro interno foi atualizado pela lideranca. ` +
+      `Credencial: ${updatedUser.userNumber}.`;
+    enqueueOrgDelivery("email", updatedUser.email, updateMessage, {
+      type: "profile_updated_by_management",
+      userNumber: updatedUser.userNumber
+    });
+    if (emailChanged && previousEmail && !safeStringEquals(previousEmail, updatedUser.email)) {
+      enqueueOrgDelivery(
+        "email",
+        previousEmail,
+        "Seu e-mail de cadastro da Fatality foi alterado. Se nao foi voce, contacte a lideranca imediatamente.",
+        {
+          type: "profile_email_changed_notice",
+          userNumber: updatedUser.userNumber
+        }
+      );
+    }
+
+    if (String(updatedUser.whatsapp || "").trim()) {
+      enqueueOrgDelivery("whatsapp", updatedUser.whatsapp, updateMessage, {
+        type: "profile_updated_by_management",
+        userNumber: updatedUser.userNumber
+      });
+    }
+
+    audit("org.user_profile_updated", req, {
+      actor: req.orgSession.userNumber,
+      target: updatedUser.userNumber,
+      role: updatedUser.role,
+      emailChanged
+    });
+
+    res.json({
+      ok: true,
+      message: emailChanged
+        ? "Cadastro atualizado. O e-mail foi alterado e voltou para pendente de verificacao."
+        : "Cadastro atualizado com sucesso.",
+      user: {
+        userNumber: updatedUser.userNumber,
+        credentialNumber: updatedUser.userNumber,
+        fullName: updatedUser.fullName || "",
+        inGameName: updatedUser.inGameName || "",
+        gameId: updatedUser.gameId || "",
+        serverId: updatedUser.serverId || "",
+        email: updatedUser.email || "",
+        whatsapp: updatedUser.whatsapp || "",
+        identificacaoGenero: updatedUser.identificacaoGenero || "Prefiro nao informar",
+        note: updatedUser.note || "",
+        role: updatedUser.role,
+        emailVerifiedAt: updatedUser.emailVerifiedAt || null,
+        updatedAt: updatedUser.updatedAt || nowIso
+      }
+    });
+  }
+);
+
+app.post(
   "/api/org/admin/users/:userNumber/update-role",
   orgWriteLimiter,
   requireCsrf,
