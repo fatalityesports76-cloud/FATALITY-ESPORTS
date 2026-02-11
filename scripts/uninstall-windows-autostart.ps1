@@ -2,10 +2,11 @@ $ErrorActionPreference = "Stop"
 
 $taskName = "Fatality-AutoStart-Deploy-Server"
 
-cmd.exe /c "schtasks /Delete /TN ""$taskName"" /F >nul 2>&1" | Out-Null
-
-if ($LASTEXITCODE -eq 0) {
-  Write-Output "Tarefa removida: $taskName"
-} else {
+$task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+if ($null -eq $task) {
   Write-Output "Tarefa nao existia: $taskName"
+  exit 0
 }
+
+Unregister-ScheduledTask -TaskName $taskName -Confirm:$false | Out-Null
+Write-Output "Tarefa removida: $taskName"
