@@ -169,6 +169,11 @@ function initParticleField() {
   applyScrollEffects();
 }
 
+const encoder = new TextEncoder();
+let securityContext = null;
+const cookieConsentStorageKey = "fatality_cookie_consent_v1";
+let cookieConsentOverlay = null;
+
 initParticleField();
 initPhoenixEmitter();
 initSelectionStepper();
@@ -176,11 +181,6 @@ initNavigationHighlight();
 initCookieConsent();
 initOrgAccess();
 initOrgEmailVerificationPage();
-
-const encoder = new TextEncoder();
-let securityContext = null;
-const cookieConsentStorageKey = "fatality_cookie_consent_v1";
-let cookieConsentOverlay = null;
 
 function setFeedback(message, color) {
   feedback.textContent = message;
