@@ -827,6 +827,8 @@ function initOrgAccess() {
   let performanceEventSource = null;
   let performanceEventReconnectTimer = null;
   let performanceReloadTimer = null;
+  let orgAuthInFlight = false;
+  let orgSessionVersion = 0;
 
   function isApprovalRole(role) {
     return approvalRoles.has(String(role || ""));
@@ -1083,7 +1085,7 @@ function initOrgAccess() {
 
     const body = await response.json().catch(() => ({}));
 
-    if (response.status === 401 && currentSession) {
+    if (response.status === 401 && currentSession && !orgAuthInFlight) {
       currentSession = null;
       resetAllForms();
       applySession(null);
@@ -2804,6 +2806,7 @@ function initOrgAccess() {
     }
 
     try {
+      orgAuthInFlight = true;
       setState("Validando acesso da org...", "#9fd0ff");
       const { response, body } = await secureOrgRequest("/api/org/login", {
         method: "POST",
@@ -2836,11 +2839,14 @@ function initOrgAccess() {
       }
 
       currentSession = body.session;
+      orgSessionVersion += 1;
       applySession(currentSession);
       closePanel();
     } catch (error) {
       console.error(error);
       setState(String(error?.message || "Falha ao autenticar. Tente novamente."), "#ffb3c0");
+    } finally {
+      orgAuthInFlight = false;
     }
   });
 
@@ -2860,6 +2866,7 @@ function initOrgAccess() {
     }
 
     try {
+      orgAuthInFlight = true;
       setState("Validando código de e-mail...", "#9fd0ff");
       const { response, body } = await secureOrgRequest("/api/org/login/confirm-email", {
         method: "POST",
@@ -2878,11 +2885,14 @@ function initOrgAccess() {
       orgLoginVerificationIdInput.value = "";
       orgLoginVerifyForm.reset();
       currentSession = body.session;
+      orgSessionVersion += 1;
       applySession(currentSession);
       closePanel();
     } catch (error) {
       console.error(error);
       setState("Falha ao confirmar código de e-mail.", "#ffb3c0");
+    } finally {
+      orgAuthInFlight = false;
     }
   });
 
@@ -3700,19 +3710,21 @@ function initOrgAccess() {
   syncDirectCreateRoleOptions();
 
   async function restoreOrgSession(clearOnFailure = true) {
+    const restoreVersion = orgSessionVersion;
     try {
       const { response, body } = await secureOrgRequest("/api/org/session", { method: "GET" });
       if (!response.ok || !body?.ok || !body?.session) {
-        if (clearOnFailure) {
+        if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
           applySession(null);
         }
         return;
       }
 
       currentSession = body.session;
+      orgSessionVersion += 1;
       applySession(currentSession);
     } catch (_error) {
-      if (clearOnFailure) {
+      if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
         applySession(null);
       }
     }
