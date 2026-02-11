@@ -629,6 +629,18 @@ app.post("/api/org/login", orgLoginLimiter, requireCsrf, (req, res) => {
   }
 
   if (!user.emailVerifiedAt) {
+    const emailDeliveryConfigured = hasEmailDeliveryConfigured();
+    const debugOnlyDelivery = !emailDeliveryConfigured;
+    if (!emailDeliveryConfigured && !ORG_SHOW_DELIVERY_DEBUG) {
+      addRisk(req, 2, "org_login_email_delivery_unconfigured");
+      apiError(
+        res,
+        503,
+        "Canal de e-mail indisponivel no momento. Configure ORG_EMAIL_PROVIDER + ORG_RESEND_API_KEY ou ORG_EMAIL_WEBHOOK_URL."
+      );
+      return;
+    }
+
     const now = Date.now();
     const verificationId = crypto.randomUUID();
     const verificationCode = createNumericToken(6);
@@ -703,7 +715,16 @@ app.post("/api/org/login", orgLoginLimiter, requireCsrf, (req, res) => {
       requiresEmailVerification: true,
       verificationId,
       email: user.email,
-      message: "Digite o codigo enviado para seu e-mail para concluir o login.",
+      deliveryMode: debugOnlyDelivery ? "debug_only" : "email",
+      message: debugOnlyDelivery
+        ? "Canal de e-mail nao configurado. Use o codigo de debug para concluir o login."
+        : "Digite o codigo enviado para seu e-mail para concluir o login.",
+      ...(debugOnlyDelivery
+        ? {
+            deliveryWarning:
+              "Configure ORG_EMAIL_PROVIDER + ORG_RESEND_API_KEY ou ORG_EMAIL_WEBHOOK_URL para envio real de e-mail."
+          }
+        : {}),
       ...(ORG_SHOW_DELIVERY_DEBUG ? { debugVerificationCode: verificationCode } : {})
     });
     return;
@@ -1314,6 +1335,18 @@ app.post("/api/org/email/change/request", orgWriteLimiter, requireCsrf, requireO
     return;
   }
 
+  const emailDeliveryConfigured = hasEmailDeliveryConfigured();
+  const debugOnlyDelivery = !emailDeliveryConfigured;
+  if (!emailDeliveryConfigured && !ORG_SHOW_DELIVERY_DEBUG) {
+    addRisk(req, 2, "org_email_change_delivery_unconfigured");
+    apiError(
+      res,
+      503,
+      "Canal de e-mail indisponivel no momento. Configure ORG_EMAIL_PROVIDER + ORG_RESEND_API_KEY ou ORG_EMAIL_WEBHOOK_URL."
+    );
+    return;
+  }
+
   const now = Date.now();
   const verificationId = crypto.randomUUID();
   const verificationCode = createNumericToken(6);
@@ -1407,7 +1440,16 @@ app.post("/api/org/email/change/request", orgWriteLimiter, requireCsrf, requireO
   res.status(202).json({
     ok: true,
     verificationId,
-    message: "Codigo enviado para o novo e-mail. Confirme para concluir a troca.",
+    deliveryMode: debugOnlyDelivery ? "debug_only" : "email",
+    message: debugOnlyDelivery
+      ? "Canal de e-mail nao configurado. Use o codigo de debug para concluir a troca."
+      : "Codigo enviado para o novo e-mail. Confirme para concluir a troca.",
+    ...(debugOnlyDelivery
+      ? {
+          deliveryWarning:
+            "Configure ORG_EMAIL_PROVIDER + ORG_RESEND_API_KEY ou ORG_EMAIL_WEBHOOK_URL para envio real de e-mail."
+        }
+      : {}),
     ...(ORG_SHOW_DELIVERY_DEBUG ? { debugVerificationCode: verificationCode } : {})
   });
 });
