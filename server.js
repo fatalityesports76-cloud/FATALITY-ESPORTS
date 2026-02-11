@@ -133,11 +133,23 @@ const ORG_WHATSAPP_PROVIDER = normalizeOrgWhatsAppProvider(
   process.env.ORG_WHATSAPP_PROVIDER || "webhook"
 );
 const ORG_WHATSAPP_WEBHOOK_URL = String(process.env.ORG_WHATSAPP_WEBHOOK_URL || "").trim();
-const ORG_META_WA_PHONE_NUMBER_ID = String(process.env.ORG_META_WA_PHONE_NUMBER_ID || "").trim();
-const ORG_META_WA_ACCESS_TOKEN = String(process.env.ORG_META_WA_ACCESS_TOKEN || "").trim();
-const ORG_META_WA_API_VERSION = String(process.env.ORG_META_WA_API_VERSION || "v21.0").trim();
+const ORG_META_WA_PHONE_NUMBER_ID = String(
+  process.env.ORG_META_WA_PHONE_NUMBER_ID || process.env.ORG_META_WHATSAPP_PHONE_NUMBER_ID || ""
+).trim();
+const ORG_META_WA_ACCESS_TOKEN = String(
+  process.env.ORG_META_WA_ACCESS_TOKEN ||
+    process.env.ORG_META_WHATSAPP_ACCESS_TOKEN ||
+    process.env.ORG_META_WHATSAPP_TOKEN ||
+    process.env.ORG_META_WHATSAPP_API_TOKEN ||
+    ""
+).trim();
+const ORG_META_WA_API_VERSION = String(
+  process.env.ORG_META_WA_API_VERSION || process.env.ORG_META_WHATSAPP_API_VERSION || "v21.0"
+).trim();
 const ORG_META_WA_GRAPH_BASE_URL = String(
-  process.env.ORG_META_WA_GRAPH_BASE_URL || "https://graph.facebook.com"
+  process.env.ORG_META_WA_GRAPH_BASE_URL ||
+    process.env.ORG_META_WHATSAPP_GRAPH_BASE_URL ||
+    "https://graph.facebook.com"
 ).trim();
 const ORG_EMAIL_WEBHOOK_URL = String(process.env.ORG_EMAIL_WEBHOOK_URL || "").trim();
 const ORG_EMAIL_FROM = String(
@@ -3700,8 +3712,21 @@ function isPlaceholderValue(rawValue) {
     lowered.includes("changeme") ||
     lowered.includes("example.com") ||
     lowered.includes("your_") ||
+    lowered.includes("your-") ||
+    lowered.includes("seu_") ||
+    lowered.includes("seu-") ||
+    lowered.includes("seuendpoint") ||
     lowered === "replace_me"
   );
+}
+
+function isValidHttpUrl(rawValue) {
+  try {
+    const parsed = new URL(String(rawValue || ""));
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
 }
 
 function hasValidResendConfig() {
@@ -3713,7 +3738,19 @@ function hasValidResendConfig() {
 }
 
 function hasConfiguredEmailWebhook() {
-  return Boolean(ORG_EMAIL_WEBHOOK_URL) && !isPlaceholderValue(ORG_EMAIL_WEBHOOK_URL);
+  return (
+    Boolean(ORG_EMAIL_WEBHOOK_URL) &&
+    !isPlaceholderValue(ORG_EMAIL_WEBHOOK_URL) &&
+    isValidHttpUrl(ORG_EMAIL_WEBHOOK_URL)
+  );
+}
+
+function hasConfiguredWhatsAppWebhook() {
+  return (
+    Boolean(ORG_WHATSAPP_WEBHOOK_URL) &&
+    !isPlaceholderValue(ORG_WHATSAPP_WEBHOOK_URL) &&
+    isValidHttpUrl(ORG_WHATSAPP_WEBHOOK_URL)
+  );
 }
 
 function hasEmailDeliveryConfigured() {
@@ -3759,7 +3796,7 @@ function logOrgDeliveryConfigStatus() {
       );
     }
   } else {
-    if (!ORG_WHATSAPP_WEBHOOK_URL || isPlaceholderValue(ORG_WHATSAPP_WEBHOOK_URL)) {
+    if (!hasConfiguredWhatsAppWebhook()) {
       console.warn("[org-delivery] WhatsApp webhook nao configurado.");
       console.warn("[org-delivery] Defina ORG_WHATSAPP_WEBHOOK_URL para enviar mensagens via WhatsApp.");
     }
@@ -3787,10 +3824,10 @@ async function dispatchOrgDelivery(payload) {
     if (ORG_WHATSAPP_PROVIDER === "meta_cloud") {
       delivered = await sendWhatsAppViaMetaCloud(payload);
 
-      if (!delivered && ORG_WHATSAPP_WEBHOOK_URL) {
+      if (!delivered && hasConfiguredWhatsAppWebhook()) {
         delivered = await sendOrgDeliveryWebhook(payload, ORG_WHATSAPP_WEBHOOK_URL, "whatsapp_webhook_fallback");
       }
-    } else if (ORG_WHATSAPP_WEBHOOK_URL) {
+    } else if (hasConfiguredWhatsAppWebhook()) {
       delivered = await sendOrgDeliveryWebhook(payload, ORG_WHATSAPP_WEBHOOK_URL, "whatsapp_webhook");
     }
   } else if (channel === "email") {
@@ -3798,7 +3835,7 @@ async function dispatchOrgDelivery(payload) {
       delivered = await sendEmailViaResend(payload);
     }
 
-    if (!delivered && ORG_EMAIL_WEBHOOK_URL) {
+    if (!delivered && hasConfiguredEmailWebhook()) {
       delivered = await sendOrgDeliveryWebhook(payload, ORG_EMAIL_WEBHOOK_URL, "email_webhook");
     }
   }
