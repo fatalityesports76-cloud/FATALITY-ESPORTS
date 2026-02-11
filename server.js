@@ -3295,16 +3295,23 @@ function initializeOrgStore() {
   updateOrgStore((store) => {
     for (let index = 0; index < OWNER_FIXED_NUMBERS.length; index += 1) {
       const fixedUserNumber = OWNER_FIXED_NUMBERS[index];
+      const fixedPassword = getConfiguredOwnerPassword(fixedUserNumber);
       let ownerUser = store.users.find((user) => user.userNumber === fixedUserNumber);
       if (ownerUser) {
         ownerUser.role = ORG_OWNER_ROLE;
         ownerUser.status = "active";
         ownerUser.emailVerifiedAt = ownerUser.emailVerifiedAt || new Date().toISOString();
+        if (fixedPassword) {
+          ownerUser.passwordHash = createPasswordHash(fixedPassword);
+          ownerUser.mustChangePassword = false;
+          ownerUser.temporaryPassword = fixedPassword;
+          ownerUser.temporaryPasswordUpdatedAt = new Date().toISOString();
+        }
         ownerUser.updatedAt = new Date().toISOString();
         continue;
       }
 
-      const tempPassword = createTemporaryPassword();
+      const tempPassword = fixedPassword || createTemporaryPassword();
       ownerUser = {
         id: crypto.randomUUID(),
         userNumber: fixedUserNumber,
@@ -3314,7 +3321,7 @@ function initializeOrgStore() {
         whatsapp: "00000000000",
         role: ORG_OWNER_ROLE,
         status: "active",
-        mustChangePassword: true,
+        mustChangePassword: !fixedPassword,
         emailVerifiedAt: new Date().toISOString(),
         approvedAt: new Date().toISOString(),
         approvedBy: "system",
@@ -3355,6 +3362,23 @@ function parseFixedUserNumbers(rawValue) {
     .filter((entry) => /^[0-9]{4,12}$/.test(entry));
 
   return values.length > 0 ? Array.from(new Set(values)) : ["900001"];
+}
+
+function getConfiguredOwnerPassword(userNumber) {
+  const envKey = `ORG_OWNER_PASSWORD_${userNumber}`;
+  const value = String(process.env[envKey] || "").trim();
+  if (!value) {
+    return "";
+  }
+
+  if (value.length < 8 || value.length > 160) {
+    console.warn(
+      `[security] ${envKey} ignorada: senha deve ter entre 8 e 160 caracteres.`
+    );
+    return "";
+  }
+
+  return value;
 }
 
 function readOrgStore() {
