@@ -2764,7 +2764,8 @@ function initOrgAccess() {
       return;
     }
 
-    renderMemberStatuses(body.items || []);
+    memberStatusSnapshot = Array.isArray(body.items) ? body.items : [];
+    rerenderMemberStatusesFromSnapshot();
   }
 
   function applySession(session) {
