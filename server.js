@@ -3222,7 +3222,7 @@ function setSessionCookie(res, sessionId) {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    path: "/api/admin",
+    path: "/",
     maxAge: sessionTtlMs
   });
 }
@@ -3232,7 +3232,7 @@ function clearSessionCookie(res) {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    path: "/api/admin"
+    path: "/"
   });
 }
 
@@ -4165,7 +4165,7 @@ function setOrgSessionCookie(res, sessionId) {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
-    path: "/api/org",
+    path: "/",
     maxAge: orgSessionTtlMs
   });
 }
@@ -4175,7 +4175,7 @@ function clearOrgSessionCookie(res) {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
-    path: "/api/org"
+    path: "/"
   });
 }
 
