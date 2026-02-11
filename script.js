@@ -3440,6 +3440,111 @@ function initOrgAccess() {
     });
   }
 
+  if (orgMemberSearchInput) {
+    orgMemberSearchInput.addEventListener("input", () => {
+      rerenderMemberStatusesFromSnapshot();
+    });
+  }
+
+  if (orgMemberFilterRole) {
+    orgMemberFilterRole.addEventListener("change", () => {
+      rerenderMemberStatusesFromSnapshot();
+    });
+  }
+
+  if (orgMemberFilterEmail) {
+    orgMemberFilterEmail.addEventListener("change", () => {
+      rerenderMemberStatusesFromSnapshot();
+    });
+  }
+
+  if (orgMemberClearFilters) {
+    orgMemberClearFilters.addEventListener("click", () => {
+      if (orgMemberSearchInput) {
+        orgMemberSearchInput.value = "";
+      }
+      if (orgMemberFilterRole) {
+        orgMemberFilterRole.value = "";
+      }
+      if (orgMemberFilterEmail) {
+        orgMemberFilterEmail.value = "";
+      }
+      rerenderMemberStatusesFromSnapshot();
+      setState("Filtros de membros limpos.", "#ffcf9f");
+    });
+  }
+
+  orgMemberEditCancelButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      closeMemberEditModal();
+      setState("Atualizacao de cadastro cancelada.", "#ffcf9f");
+    });
+  });
+
+  if (orgMemberEditForm) {
+    orgMemberEditForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!currentSession || !isApprovalRole(currentSession.role)) {
+        setState("Somente dono, lider, vice-lider e ADM podem atualizar cadastro.", "#ffb3c0");
+        return;
+      }
+
+      if (!orgMemberEditForm.checkValidity()) {
+        orgMemberEditForm.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(orgMemberEditForm);
+      const userNumber = String(formData.get("userNumber") || "").trim();
+      if (!/^[0-9]{4,12}$/.test(userNumber)) {
+        setState("Credencial invalida para atualizacao.", "#ffb3c0");
+        return;
+      }
+
+      const member = getMemberByUserNumber(userNumber);
+      if (!member || !canEditMemberProfile(member)) {
+        setState("Seu cargo nao possui permissao para atualizar este cadastro.", "#ffb3c0");
+        return;
+      }
+
+      const payload = {
+        fullName: String(formData.get("fullName") || "").trim(),
+        email: String(formData.get("email") || "").trim().toLowerCase(),
+        inGameName: String(formData.get("inGameName") || "").trim(),
+        gameId: String(formData.get("gameId") || "").trim(),
+        serverId: String(formData.get("serverId") || "").trim(),
+        whatsapp: String(formData.get("whatsapp") || "").trim(),
+        identificacaoGenero: String(formData.get("identificacaoGenero") || "").trim(),
+        note: String(formData.get("note") || "").trim()
+      };
+
+      try {
+        setState(`Atualizando cadastro da credencial ${userNumber}...`, "#9fd0ff");
+        const { response, body } = await secureOrgRequest(
+          `/api/org/admin/users/${encodeURIComponent(userNumber)}/update-profile`,
+          {
+            method: "POST",
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if (!response.ok || !body?.ok) {
+          setState(body?.error || "Falha ao atualizar cadastro do membro.", "#ffb3c0");
+          return;
+        }
+
+        closeMemberEditModal();
+        setState(body.message || "Cadastro atualizado com sucesso.", "#9ff7d8");
+        await refreshMemberStatuses();
+        await refreshMemberDataPanel();
+      } catch (error) {
+        console.error(error);
+        setState("Falha ao atualizar cadastro do membro.", "#ffb3c0");
+      }
+    });
+  }
+
   if (orgMemberDataRefresh) {
     orgMemberDataRefresh.addEventListener("click", () => {
       void refreshMemberDataPanel();
