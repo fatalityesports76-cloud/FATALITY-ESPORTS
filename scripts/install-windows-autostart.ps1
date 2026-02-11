@@ -7,19 +7,22 @@ if (-not (Test-Path $scriptPath)) {
   throw "Script de bootstrap nao encontrado: $scriptPath"
 }
 
-$quotedScript = '"' + $scriptPath + '"'
-$taskCommand = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File $quotedScript"
+$taskArgument = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
 
-# Recria para garantir parametros corretos.
-$deleteCmd = "schtasks /Delete /TN ""$taskName"" /F >nul 2>&1"
-cmd.exe /c $deleteCmd | Out-Null
+Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
 
-$createCmd = "schtasks /Create /F /TN ""$taskName"" /SC ONLOGON /RL LIMITED /TR ""$taskCommand"""
-$createOutput = cmd.exe /c $createCmd 2>&1
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $taskArgument
+$trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERNAME"
+$principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
+$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+$task = New-ScheduledTask `
+  -Action $action `
+  -Trigger $trigger `
+  -Principal $principal `
+  -Settings $settings `
+  -Description "Inicia auto deploy e servidor local da Fatality no login do Windows."
 
-if ($LASTEXITCODE -ne 0) {
-  throw "Falha ao criar tarefa agendada: $createOutput"
-}
+Register-ScheduledTask -TaskName $taskName -InputObject $task -Force | Out-Null
 
 Write-Output "Tarefa criada: $taskName"
-Write-Output "Comando: $taskCommand"
+Write-Output "Comando: powershell.exe $taskArgument"
