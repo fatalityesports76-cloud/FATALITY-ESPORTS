@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "deploy:auto": "powershell -ExecutionPolicy Bypass -File ./scripts/auto-deploy-watch.ps1",
+    "deploy:once": "powershell -ExecutionPolicy Bypass -File ./scripts/auto-deploy-watch.ps1 -RunOnce",
     "security:setup": "node scripts/setup-security.js",
     "security:set-admin": "node scripts/set-admin-password.js",
     "security:decrypt": "node scripts/decrypt-submissions.js",
