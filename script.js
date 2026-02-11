@@ -3481,6 +3481,17 @@ function initOrgAccess() {
     });
   });
 
+  window.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") {
+      return;
+    }
+    if (!orgMemberEditModal || orgMemberEditModal.hidden) {
+      return;
+    }
+    closeMemberEditModal();
+    setState("Atualizacao de cadastro cancelada.", "#ffcf9f");
+  });
+
   if (orgMemberEditForm) {
     orgMemberEditForm.addEventListener("submit", async (event) => {
       event.preventDefault();
