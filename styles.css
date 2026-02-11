@@ -433,21 +433,25 @@ body.cookie-consent-lock {
   z-index: 35;
 }
 
-.org-access.org-access-page {
+.org-access.org-access-page,
+.org-access[data-org-page] {
   width: min(660px, 100%);
   margin: 0 auto;
   display: block;
 }
 
-.org-access.org-access-page .org-access-toggle {
+.org-access.org-access-page .org-access-toggle,
+.org-access[data-org-page] .org-access-toggle {
   display: none;
 }
 
-.org-access.org-access-page .org-role-chip {
+.org-access.org-access-page .org-role-chip,
+.org-access[data-org-page] .org-role-chip {
   margin-bottom: 0.56rem;
 }
 
-.org-access.org-access-page .org-access-panel {
+.org-access.org-access-page .org-access-panel,
+.org-access[data-org-page] .org-access-panel {
   position: static;
   top: auto;
   right: auto;
