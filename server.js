@@ -169,6 +169,8 @@ const riskDecayMs = Number.parseInt(process.env.RISK_DECAY_MS || String(10 * 60 
 const riskBlockMs = Number.parseInt(process.env.RISK_BLOCK_MS || String(90 * 60 * 1000), 10);
 const maxRiskBeforeBlock = Number.parseInt(process.env.MAX_RISK_BEFORE_BLOCK || "12", 10);
 const maxConnectionsPerIp = Number.parseInt(process.env.MAX_CONNECTIONS_PER_IP || "80", 10);
+const enableIpRiskBlock =
+  String(process.env.ENABLE_IP_RISK_BLOCK || "false").toLowerCase() === "true";
 const riskBlockOnlyApi =
   String(process.env.RISK_BLOCK_ONLY_API || "true").toLowerCase() === "true";
 const maxRequestUrlLength = 2048;
@@ -214,6 +216,11 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  if (!enableIpRiskBlock) {
+    next();
+    return;
+  }
+
   const risk = getRiskState(req);
   if (!risk || !risk.blockedUntil) {
     next();
@@ -4505,7 +4512,7 @@ function addRisk(req, points, reason) {
   current.updatedAt = now;
   current.reasons = [...current.reasons.slice(-6), reason];
 
-  if (!isLocalIp(normalizedIp) && current.score >= maxRiskBeforeBlock) {
+  if (enableIpRiskBlock && !isLocalIp(normalizedIp) && current.score >= maxRiskBeforeBlock) {
     const nextBlockUntil = now + riskBlockMs;
     const shouldAuditBlock = !current.blockedUntil || current.blockedUntil < nextBlockUntil;
     current.blockedUntil = nextBlockUntil;
