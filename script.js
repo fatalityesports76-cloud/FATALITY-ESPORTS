@@ -714,6 +714,15 @@ function initOrgAccess() {
   const orgOwnerRefresh = orgAccessRoot.querySelector("[data-org-owner-refresh]");
   const orgMembersList = orgAccessRoot.querySelector("[data-org-members-list]");
   const orgMembersRefresh = orgAccessRoot.querySelector("[data-org-members-refresh]");
+  const orgAdminDashboard = orgAccessRoot.querySelector("[data-org-admin-dashboard]");
+  const orgKpiTotal = orgAccessRoot.querySelector("[data-org-kpi-total]");
+  const orgKpiVerified = orgAccessRoot.querySelector("[data-org-kpi-verified]");
+  const orgKpiPending = orgAccessRoot.querySelector("[data-org-kpi-pending]");
+  const orgKpiLeadership = orgAccessRoot.querySelector("[data-org-kpi-leadership]");
+  const orgMemberSearchInput = orgAccessRoot.querySelector("[data-org-member-search]");
+  const orgMemberFilterRole = orgAccessRoot.querySelector("[data-org-member-filter-role]");
+  const orgMemberFilterEmail = orgAccessRoot.querySelector("[data-org-member-filter-email]");
+  const orgMemberClearFilters = orgAccessRoot.querySelector("[data-org-member-clear-filters]");
   const orgAdvancedOps = orgAccessRoot.querySelector("[data-org-advanced-ops]");
   const orgOwnerTarget = orgAccessRoot.querySelector("[data-org-owner-target]");
   const orgOwnerAssume = orgAccessRoot.querySelector("[data-org-owner-assume]");
@@ -755,6 +764,12 @@ function initOrgAccess() {
     "[data-org-email-change-verification-id]"
   );
   const orgEmailChangeCancel = orgAccessRoot.querySelector("[data-org-email-change-cancel]");
+  const orgMemberEditModal = document.querySelector("[data-org-member-edit-modal]");
+  const orgMemberEditForm = document.querySelector("[data-org-member-edit-form]");
+  const orgMemberEditLead = document.querySelector("[data-org-member-edit-lead]");
+  const orgMemberEditCancelButtons = Array.from(
+    document.querySelectorAll("[data-org-member-edit-cancel]")
+  );
   const isOrgPage = orgAccessRoot.hasAttribute("data-org-page");
 
   if (
@@ -829,6 +844,7 @@ function initOrgAccess() {
   let performanceReloadTimer = null;
   let orgAuthInFlight = false;
   let orgSessionVersion = 0;
+  let memberStatusSnapshot = [];
 
   function isApprovalRole(role) {
     return approvalRoles.has(String(role || ""));
