@@ -1,6 +1,11 @@
 $ErrorActionPreference = "Stop"
 
-$taskName = "Fatality Auto Start (Deploy + Server)"
+$taskName = "Fatality-AutoStart-Deploy-Server"
 
-schtasks /Delete /TN $taskName /F | Out-Null
-Write-Output "Tarefa removida: $taskName"
+& schtasks /Delete /TN $taskName /F *> $null
+
+if ($LASTEXITCODE -eq 0) {
+  Write-Output "Tarefa removida: $taskName"
+} else {
+  Write-Output "Tarefa nao existia: $taskName"
+}
