@@ -274,9 +274,9 @@ app.use(
         frameAncestors: ["'none'"],
         objectSrc: ["'none'"],
         scriptSrc: ["'self'"],
-        styleSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         imgSrc: ["'self'", "data:"],
-        fontSrc: ["'self'", "data:"],
+        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
         connectSrc: ["'self'"],
         upgradeInsecureRequests: []
       }
