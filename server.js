@@ -169,6 +169,8 @@ const riskDecayMs = Number.parseInt(process.env.RISK_DECAY_MS || String(10 * 60 
 const riskBlockMs = Number.parseInt(process.env.RISK_BLOCK_MS || String(90 * 60 * 1000), 10);
 const maxRiskBeforeBlock = Number.parseInt(process.env.MAX_RISK_BEFORE_BLOCK || "12", 10);
 const maxConnectionsPerIp = Number.parseInt(process.env.MAX_CONNECTIONS_PER_IP || "80", 10);
+const riskBlockOnlyApi =
+  String(process.env.RISK_BLOCK_ONLY_API || "true").toLowerCase() === "true";
 const maxRequestUrlLength = 2048;
 const allowedMethods = new Set(["GET", "POST", "HEAD", "OPTIONS"]);
 
@@ -221,6 +223,11 @@ app.use((req, res, next) => {
   const now = Date.now();
   if (risk.blockedUntil <= now) {
     clearRisk(req);
+    next();
+    return;
+  }
+
+  if (riskBlockOnlyApi && !req.path.startsWith("/api/")) {
     next();
     return;
   }
