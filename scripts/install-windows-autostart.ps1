@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$taskName = "Fatality Auto Start (Deploy + Server)"
+$taskName = "Fatality-AutoStart-Deploy-Server"
 $scriptPath = Join-Path $PSScriptRoot "autostart-on-logon.ps1"
 
 if (-not (Test-Path $scriptPath)) {
@@ -11,14 +11,19 @@ $quotedScript = '"' + $scriptPath + '"'
 $taskCommand = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File $quotedScript"
 
 # Recria para garantir parametros corretos.
-schtasks /Delete /TN $taskName /F 1>$null 2>$null | Out-Null
+& schtasks /Delete /TN $taskName /F *> $null
 
-schtasks /Create `
+$createOutput = & schtasks `
+  /Create `
   /F `
   /TN $taskName `
   /SC ONLOGON `
   /RL LIMITED `
-  /TR $taskCommand | Out-Null
+  /TR $taskCommand 2>&1
+
+if ($LASTEXITCODE -ne 0) {
+  throw "Falha ao criar tarefa agendada: $createOutput"
+}
 
 Write-Output "Tarefa criada: $taskName"
 Write-Output "Comando: $taskCommand"
