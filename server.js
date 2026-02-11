@@ -126,6 +126,8 @@ const ORG_PERFORMANCE_CATEGORY_KEYS = ORG_PERFORMANCE_CATEGORIES.map((item) => i
 const OWNER_FIXED_NUMBERS = parseFixedUserNumbers(process.env.ORG_OWNER_FIXED_NUMBERS || "900001");
 const ORG_SHOW_DELIVERY_DEBUG =
   String(process.env.ORG_SHOW_DELIVERY_DEBUG || "true").toLowerCase() === "true";
+const enforceOrgSessionBinding =
+  String(process.env.ORG_ENFORCE_SESSION_BINDING || "false").toLowerCase() === "true";
 const ORG_EMAIL_PROVIDER = String(process.env.ORG_EMAIL_PROVIDER || "webhook").toLowerCase().trim();
 const ORG_WHATSAPP_PROVIDER = normalizeOrgWhatsAppProvider(
   process.env.ORG_WHATSAPP_PROVIDER || "webhook"
@@ -4205,17 +4207,19 @@ function requireOrgSession(req, res, next) {
     return;
   }
 
-  const sameIp = safeStringEquals(session.ipHash, getRequestIpHash(req));
-  const sameUserAgent = safeStringEquals(session.userAgentHash, getRequestUserAgentHash(req));
-  if (!sameIp || !sameUserAgent) {
-    orgSessions.delete(sessionId);
-    clearOrgSessionCookie(res);
-    addRisk(req, 6, "org_session_binding_failed");
-    audit("org.session_binding_failed", req, {
-      userNumber: session.userNumber
-    });
-    apiError(res, 401, "Sessao invalida.");
-    return;
+  if (enforceOrgSessionBinding) {
+    const sameIp = safeStringEquals(session.ipHash, getRequestIpHash(req));
+    const sameUserAgent = safeStringEquals(session.userAgentHash, getRequestUserAgentHash(req));
+    if (!sameIp || !sameUserAgent) {
+      orgSessions.delete(sessionId);
+      clearOrgSessionCookie(res);
+      addRisk(req, 6, "org_session_binding_failed");
+      audit("org.session_binding_failed", req, {
+        userNumber: session.userNumber
+      });
+      apiError(res, 401, "Sessao invalida.");
+      return;
+    }
   }
 
   req.orgSession = session;
