@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatality Security Console</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260210b">
+  <link rel="icon" type="image/png" sizes="256x256" href="/assets/favicon-256.png?v=20260210b">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260210b">
+  <link rel="apple-touch-icon" href="/assets/favicon-256.png?v=20260210b">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="section admin-shell">
+    <p class="kicker">Fatality Security Console</p>
+    <h1>Painel administrativo protegido</h1>
+    <p class="hero-text">
+      Esta área exibe inscrições criptografadas e trilhas de auditoria. A descriptografia deve ser feita offline com a chave privada da staff.
+    </p>
+
+    <section id="loginPanel" class="admin-panel">
+      <h2>Login admin</h2>
+      <form id="adminLoginForm" novalidate>
+        <div class="field-row split">
+          <div>
+            <label for="adminUser">Usuário</label>
+            <input id="adminUser" name="username" type="text" autocomplete="username" required>
+          </div>
+          <div>
+            <label for="adminPass">Senha</label>
+            <input id="adminPass" name="password" type="password" autocomplete="current-password" required>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </form>
+      <p id="adminFeedback" class="feedback" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="consolePanel" class="admin-panel hidden-block">
+      <div class="admin-toolbar">
+        <button id="refreshBtn" class="btn btn-secondary" type="button">Atualizar dados</button>
+        <button id="logoutBtn" class="btn btn-secondary" type="button">Sair</button>
+      </div>
+
+      <h2>Inscrições criptografadas</h2>
+      <pre id="submissionsView" class="admin-code">[]</pre>
+
+      <h2>Eventos de segurança</h2>
+      <pre id="auditView" class="admin-code">[]</pre>
+    </section>
+  </main>
+
+  <script src="anti-inspect.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /data/
+Disallow: /logs/
+Disallow: /secrets/
+Disallow: /keys/
+Disallow: /scripts/
+Disallow: /certs/
+
+Sitemap: https://fatality-e-sports-official.com.br/sitemap.xml

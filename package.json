@@ -1,0 +1,29 @@
+{
+  "name": "fatality",
+  "version": "1.0.0",
+  "description": "Fatality E-sports secure recruitment backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "security:setup": "node scripts/setup-security.js",
+    "security:set-admin": "node scripts/set-admin-password.js",
+    "security:decrypt": "node scripts/decrypt-submissions.js",
+    "security:red-team-local": "node scripts/red-team-local.js",
+    "security:cloudflare-hardening": "node scripts/cloudflare-hardening.js",
+    "org:smoke": "node scripts/org-smoke-test.js",
+    "org:whatsapp:check": "node scripts/whatsapp-webhook-check.js",
+    "org:whatsapp:test": "node scripts/whatsapp-webhook-check.js --send-test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {}
+}

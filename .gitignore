@@ -1,0 +1,26 @@
+﻿node_modules/
+
+# Runtime data
+data/
+logs/
+
+# Sensitive material
+secrets/
+keys/
+certs/
+
+# Local env
+.env.local
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Cloudflare local secrets
+.cloudflare.env
+.cloudflare.env.*
+!.cloudflare.env.example
+
+# OS/Editor
+.DS_Store
+Thumbs.db

@@ -1,0 +1,40 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/formulario"
+  to = "/formulario.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/confirmar-email"
+  to = "/confirmar-email.html"
+  status = 200
+
+[[redirects]]
+  from = "https://www.fatality-e-sports-official.com.br/*"
+  to = "https://fatality-e-sports-official.com.br/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.fatality-e-sports-official.com.br/*"
+  to = "https://fatality-e-sports-official.com.br/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://fatality-e-sports-official.com.br/*"
+  to = "https://fatality-e-sports-official.com.br/:splat"
+  status = 301
+  force = true
