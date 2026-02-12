@@ -2019,8 +2019,13 @@ function initOrgAccess() {
           ? allTimeValue
           : weekValue;
       const score = clampPerformanceValue(rawValue);
-      const heightPercent = Math.max(8, Math.round((score / 10) * 100));
-      bar.style.height = `${heightPercent}%`;
+      const level = Math.max(0, Math.min(10, Math.round(score)));
+      const previousLevel = String(bar.dataset.heroBarLevel || "");
+      if (previousLevel) {
+        bar.classList.remove(`lv-${previousLevel}`);
+      }
+      bar.classList.add(`lv-${level}`);
+      bar.dataset.heroBarLevel = String(level);
       bar.title = `${getPerformanceCategoryLabel(key)}: ${score.toLocaleString("pt-BR", {
         minimumFractionDigits: 1,
         maximumFractionDigits: 1
@@ -2075,10 +2080,9 @@ function initOrgAccess() {
       return;
     }
 
-    rows.forEach((row, index) => {
+    rows.forEach((row) => {
       const tr = document.createElement("tr");
       tr.className = "org-dashboard-row-enter";
-      tr.style.animationDelay = `${index * 42}ms`;
       const identity = row.fullName || row.inGameName || `Player ${row.userNumber}`;
       const week = row.weekPercent === null ? "-" : formatPercentValue(row.weekPercent);
       const overall = formatPercentValue(row.overallPercent);
