@@ -3592,6 +3592,9 @@ function initOrgAccess() {
     currentSession = null;
     resetAllForms();
     applySession(null);
+    if (isOrgDashboardPage) {
+      window.location.href = "login.html";
+    }
   });
 
   orgPasswordChangeForm.addEventListener("submit", async (event) => {
