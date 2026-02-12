@@ -983,6 +983,79 @@ function initOrgAccess() {
     }
   }
 
+  function canAccessOrgPanelTab(tabKey, role) {
+    const roleValue = String(role || "");
+    if (tabKey === "full_panel" || tabKey === "direct_create" || tabKey === "credential_ops") {
+      return isApprovalRole(roleValue);
+    }
+    return true;
+  }
+
+  function setOrgPanelTab(tabKey, session = currentSession) {
+    const roleValue = String(session?.role || "");
+    const normalizedTab = String(tabKey || "access");
+    const canUseRequested = canAccessOrgPanelTab(normalizedTab, roleValue);
+    const firstAllowed =
+      orgPanelTabButtons.find((button) =>
+        canAccessOrgPanelTab(String(button.dataset.orgPanelTab || ""), roleValue)
+      ) || null;
+    const finalTab = canUseRequested
+      ? normalizedTab
+      : String(firstAllowed?.dataset.orgPanelTab || "access");
+
+    activeOrgPanelTab = finalTab;
+
+    orgPanelTabButtons.forEach((button) => {
+      const key = String(button.dataset.orgPanelTab || "");
+      const allowed = canAccessOrgPanelTab(key, roleValue);
+      button.classList.toggle("hidden", !allowed);
+      button.hidden = !allowed;
+      button.classList.toggle("is-active", key === finalTab && allowed);
+      button.setAttribute("aria-selected", key === finalTab && allowed ? "true" : "false");
+    });
+
+    orgPanelSections.forEach((section) => {
+      const key = String(section.dataset.orgPanelSection || "");
+      const visible = key === finalTab && canAccessOrgPanelTab(key, roleValue);
+      section.classList.toggle("hidden", !visible);
+      section.hidden = !visible;
+    });
+  }
+
+  function resetOrgPanelTabs() {
+    activeOrgPanelTab = "access";
+    orgPanelTabButtons.forEach((button) => {
+      button.classList.remove("is-active");
+      button.classList.add("hidden");
+      button.hidden = true;
+      button.setAttribute("aria-selected", "false");
+    });
+    orgPanelSections.forEach((section) => {
+      section.classList.add("hidden");
+      section.hidden = true;
+    });
+  }
+
+  function updateOrgAccessSummary(session) {
+    if (orgSummaryCredential) {
+      orgSummaryCredential.textContent = session?.userNumber || "-";
+    }
+    if (orgSummaryRole) {
+      orgSummaryRole.textContent = roleLabelFromValue(session?.role || "");
+    }
+    if (orgSummaryEmail) {
+      orgSummaryEmail.textContent = session?.email || "-";
+    }
+    if (orgSummaryEmailStatus) {
+      orgSummaryEmailStatus.textContent = session?.emailVerifiedAt ? "Verificado" : "Pendente";
+    }
+    if (orgSummaryPasswordStatus) {
+      orgSummaryPasswordStatus.textContent = session?.mustChangePassword
+        ? "Troca recomendada"
+        : "Atualizada";
+    }
+  }
+
   function roleLabelFromValue(roleValue) {
     if (roleValue === "sem_cargo") {
       return "Sem cargo definido";
