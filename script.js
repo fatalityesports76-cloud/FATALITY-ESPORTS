@@ -4367,6 +4367,9 @@ function initOrgAccess() {
       if (!response.ok || !body?.ok || !body?.session) {
         if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
           applySession(null);
+          if (isOrgDashboardPage) {
+            window.location.href = "login.html";
+          }
         }
         return;
       }
@@ -4377,6 +4380,9 @@ function initOrgAccess() {
     } catch (_error) {
       if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
         applySession(null);
+        if (isOrgDashboardPage) {
+          window.location.href = "login.html";
+        }
       }
     }
   }
