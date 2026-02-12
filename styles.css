@@ -1092,6 +1092,16 @@ body.org-dashboard-layout.org-authenticated > .section:nth-of-type(3) {
   min-height: 100vh;
 }
 
+body.org-dashboard-layout.org-authenticated > .section.footer,
+body.org-dashboard-layout.org-authenticated .bg-shape {
+  display: none;
+}
+
+body.org-dashboard-layout.org-authenticated {
+  background:
+    linear-gradient(180deg, rgba(12, 8, 22, 0.98), rgba(8, 5, 16, 0.98));
+}
+
 body.org-dashboard-layout.org-authenticated .org-access.org-access-page,
 body.org-dashboard-layout.org-authenticated .org-access[data-org-page] {
   width: 100%;
@@ -1115,7 +1125,57 @@ body.org-dashboard-layout.org-authenticated .org-dashboard {
 
 body.org-dashboard-layout.org-authenticated .org-dashboard-top {
   grid-column: 2;
-  padding: 0.86rem 0.9rem 0.42rem;
+  padding: 0;
+  gap: 0.66rem;
+  background: linear-gradient(180deg, rgba(16, 11, 29, 0.98), rgba(14, 9, 25, 0.92));
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-radius: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  padding: 0.58rem 0.9rem;
+  background:
+    linear-gradient(132deg, rgba(34, 21, 60, 0.98), rgba(20, 13, 36, 0.98));
+  box-shadow:
+    inset 0 -1px 0 rgba(238, 168, 255, 0.12),
+    0 8px 24px rgba(3, 2, 8, 0.36);
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-top-left {
+  gap: 0.36rem;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-title {
+  font-size: 1.85rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-subtitle {
+  border: 1px solid rgba(240, 179, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.34rem 0.46rem;
+  background: rgba(11, 7, 22, 0.7);
+  color: #d9c4ed;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-top-right {
+  min-width: min(520px, 100%);
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-search input {
+  min-height: 2.22rem;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-cards,
+body.org-dashboard-layout.org-authenticated .org-dashboard-analytics,
+body.org-dashboard-layout.org-authenticated .org-dashboard-table-preview {
+  margin: 0 0.9rem;
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
@@ -1132,32 +1192,61 @@ body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
   border-bottom: 0;
   padding: 0.9rem 0.62rem;
   overflow: visible;
+  background:
+    linear-gradient(180deg, rgba(12, 8, 22, 0.99), rgba(8, 5, 16, 0.99));
+  box-shadow:
+    inset -1px 0 0 rgba(235, 169, 255, 0.12),
+    0 18px 32px rgba(0, 0, 0, 0.35);
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-nav-head {
   display: grid;
+  gap: 0.26rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.52rem;
+  border-bottom-color: rgba(234, 166, 255, 0.2);
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-nav-group {
   display: block;
+  margin-top: 0.4rem;
+  color: #bb9cd5;
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-tab-btn {
   width: 100%;
   flex: initial;
+  border-color: rgba(185, 112, 255, 0.25);
+  background: rgba(20, 11, 35, 0.92);
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-tab-btn.is-active {
+  border-color: rgba(234, 173, 255, 0.92);
+  background:
+    linear-gradient(140deg, rgba(118, 58, 182, 0.74), rgba(57, 24, 92, 0.84));
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-section {
   grid-column: 2;
   margin: 0 0.9rem 0.82rem;
+  border-color: rgba(230, 152, 255, 0.18);
+  background:
+    linear-gradient(154deg, rgba(23, 12, 42, 0.94), rgba(10, 5, 21, 0.94));
+}
+
+body.org-dashboard-layout.org-authenticated .org-access-title,
+body.org-dashboard-layout.org-authenticated .org-mode-switch,
+body.org-dashboard-layout.org-authenticated [data-org-mode-panel="login"],
+body.org-dashboard-layout.org-authenticated [data-org-mode-panel="login_verify"] {
+  display: none !important;
 }
 
 body.org-dashboard-layout.org-authenticated .org-access-state {
   position: fixed;
   right: 0.95rem;
-  top: 0.9rem;
-  z-index: 60;
-  width: min(460px, calc(100% - 1.2rem));
+  bottom: 0.95rem;
+  z-index: 120;
+  width: min(520px, calc(100% - 1.2rem));
   border: 1px solid rgba(228, 149, 255, 0.3);
   border-radius: 10px;
   padding: 0.45rem 0.55rem;
@@ -1166,11 +1255,12 @@ body.org-dashboard-layout.org-authenticated .org-access-state {
 }
 
 body.org-dashboard-layout.org-authenticated .org-access-logout {
-  position: fixed;
-  right: 0.95rem;
-  top: 4.2rem;
-  z-index: 60;
+  position: static;
   width: auto;
+  min-width: 100px;
+  margin: 0;
+  padding: 0.46rem 0.62rem;
+  font-size: 0.66rem;
 }
 
 .org-role-chip {
