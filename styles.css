@@ -1831,11 +1831,11 @@ h1 {
 }
 
 .landing-toxic #teamLogo {
-  --logo-glow: 56px;
+  --logo-glow: 40px;
   animation: logo-pulse 2.8s ease-in-out infinite;
   filter:
-    drop-shadow(0 0 26px rgba(235, 138, 255, 0.56))
-    drop-shadow(0 0 var(--logo-glow) rgba(188, 82, 255, 0.5));
+    drop-shadow(0 0 18px rgba(235, 138, 255, 0.52))
+    drop-shadow(0 0 var(--logo-glow) rgba(188, 82, 255, 0.42));
   transform-origin: center;
 }
 
