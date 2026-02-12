@@ -1802,6 +1802,229 @@ function initOrgAccess() {
     return found ? found.label : key;
   }
 
+  function getDashboardMemberSource() {
+    if (Array.isArray(memberStatusSnapshot) && memberStatusSnapshot.length > 0) {
+      return memberStatusSnapshot;
+    }
+    if (Array.isArray(memberDirectorySnapshot) && memberDirectorySnapshot.length > 0) {
+      return memberDirectorySnapshot;
+    }
+    return [];
+  }
+
+  function computeDashboardPerformancePercent() {
+    if (lastPerformanceSummarySnapshot) {
+      const weekPercent = lastPerformanceSummarySnapshot.currentWeekPercent;
+      if (weekPercent !== null && weekPercent !== undefined) {
+        return normalizePercentValue(weekPercent);
+      }
+      return normalizePercentValue(lastPerformanceSummarySnapshot.overallPercent || 0);
+    }
+
+    if (performanceBoardSnapshot?.mode === "player") {
+      const playerWeek = performanceBoardSnapshot?.summary?.currentWeekPercent;
+      if (playerWeek !== null && playerWeek !== undefined) {
+        return normalizePercentValue(playerWeek);
+      }
+      return normalizePercentValue(performanceBoardSnapshot?.summary?.overallPercent || 0);
+    }
+
+    const rows = buildPerformanceRankingRows(performanceBoardSnapshot);
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return 0;
+    }
+
+    const total = rows.reduce((sum, row) => sum + normalizePercentValue(row.rankScore), 0);
+    return normalizePercentValue(total / rows.length);
+  }
+
+  function computeDashboardPendingOps() {
+    const members = getDashboardMemberSource();
+    const pendingEmail = members.filter((item) => !item?.emailVerifiedAt).length;
+    const pendingRequests = Array.isArray(lastPanelDataSnapshot?.requests)
+      ? lastPanelDataSnapshot.requests.filter((item) => String(item?.status || "").toLowerCase() === "pending")
+          .length
+      : 0;
+    return {
+      pendingEmail,
+      pendingRequests,
+      totalPending: pendingEmail + pendingRequests
+    };
+  }
+
+  function buildHeroTrendPoints(summary) {
+    const trend = Array.isArray(summary?.trend) ? summary.trend : [];
+    const values = trend
+      .map((item) => normalizePercentValue(item?.percent))
+      .filter((value) => Number.isFinite(value));
+
+    if (values.length === 0) {
+      values.push(0, 0);
+    } else if (values.length === 1) {
+      values.push(values[0]);
+    }
+
+    const minX = 18;
+    const maxX = 384;
+    const minY = 24;
+    const maxY = 142;
+    const rangeX = maxX - minX;
+    const rangeY = maxY - minY;
+    const step = values.length > 1 ? rangeX / (values.length - 1) : 0;
+
+    const points = values.map((value, index) => {
+      const x = minX + step * index;
+      const y = maxY - (normalizePercentValue(value) / 100) * rangeY;
+      return {
+        x: Math.round(x * 10) / 10,
+        y: Math.round(y * 10) / 10
+      };
+    });
+
+    const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
+    const linePath = `M ${points.map((point) => `${point.x} ${point.y}`).join(" L ")}`;
+    const areaPath = `M ${points[0].x} ${maxY} L ${points
+      .map((point) => `${point.x} ${point.y}`)
+      .join(" L ")} L ${points[points.length - 1].x} ${maxY} Z`;
+
+    return {
+      linePath,
+      areaPath,
+      polyline
+    };
+  }
+
+  function renderDashboardHeroTrend(summary) {
+    if (!orgHeroLinePath || !orgHeroLineArea) {
+      return;
+    }
+
+    const points = buildHeroTrendPoints(summary);
+    orgHeroLinePath.setAttribute("points", points.polyline);
+    orgHeroLinePath.setAttribute("d", points.linePath);
+    orgHeroLineArea.setAttribute("d", points.areaPath);
+  }
+
+  function renderDashboardHeroBars(summary) {
+    if (!Array.isArray(orgHeroBars) || orgHeroBars.length === 0) {
+      return;
+    }
+
+    const categoryWeek = summary?.categories?.currentWeek || {};
+    const categoryAllTime = summary?.categories?.allTime || {};
+
+    orgHeroBars.forEach((bar) => {
+      const key = String(bar.dataset.orgHeroBar || "").trim();
+      if (!key) {
+        return;
+      }
+      const weekValue = categoryWeek?.[key];
+      const allTimeValue = categoryAllTime?.[key];
+      const rawValue =
+        weekValue === null || weekValue === undefined || Number.isNaN(Number(weekValue))
+          ? allTimeValue
+          : weekValue;
+      const score = clampPerformanceValue(rawValue);
+      const heightPercent = Math.max(8, Math.round((score / 10) * 100));
+      bar.style.height = `${heightPercent}%`;
+      bar.title = `${getPerformanceCategoryLabel(key)}: ${score.toLocaleString("pt-BR", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      })}/10`;
+    });
+  }
+
+  function renderDashboardHeroTable(boardData) {
+    if (!orgHeroTableBody) {
+      return;
+    }
+
+    orgHeroTableBody.innerHTML = "";
+    const rows = buildPerformanceRankingRows(boardData).slice(0, 5);
+    if (rows.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>Sem dados</td><td>-</td><td>-</td><td>-</td>";
+      orgHeroTableBody.appendChild(tr);
+      return;
+    }
+
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      const identity = row.fullName || row.inGameName || `Player ${row.userNumber}`;
+      const week = row.weekPercent === null ? "-" : formatPercentValue(row.weekPercent);
+      const overall = formatPercentValue(row.overallPercent);
+      tr.innerHTML = `<td>${identity}</td><td>${week}</td><td>${overall}</td><td>#${row.userNumber}</td>`;
+      orgHeroTableBody.appendChild(tr);
+    });
+  }
+
+  function updateDashboardHero() {
+    const roleLabel = roleLabelFromValue(currentSession?.role || "");
+    const credential = String(currentSession?.userNumber || "").trim();
+    const members = getDashboardMemberSource().filter((item) => String(item?.status || "active") === "active");
+    const totalMembers = members.length;
+    const verifiedMembers = members.filter((item) => item?.emailVerifiedAt).length;
+    const verifiedPercent = totalMembers > 0 ? (verifiedMembers / totalMembers) * 100 : 0;
+    const performancePercent = computeDashboardPerformancePercent();
+    const pendingOps = computeDashboardPendingOps();
+
+    if (orgDashboardSubtitle) {
+      if (currentSession?.userNumber) {
+        orgDashboardSubtitle.textContent =
+          `Central operacional da organização Fatality E-Sports | ${roleLabel} #${credential}`;
+      } else {
+        orgDashboardSubtitle.textContent = "Central operacional da organização Fatality E-Sports";
+      }
+    }
+
+    if (orgHeroPillWeek) {
+      orgHeroPillWeek.textContent = performanceCurrentWeek ? `Semana ${performanceCurrentWeek}` : "Semana atual";
+    }
+    if (orgHeroPillRole) {
+      orgHeroPillRole.textContent = roleLabel || "Padrão Fatality";
+    }
+
+    if (orgHeroCardActiveValue) {
+      orgHeroCardActiveValue.textContent = String(totalMembers);
+    }
+    if (orgHeroCardActiveLabel) {
+      orgHeroCardActiveLabel.textContent = "Membros ativos na organização";
+    }
+
+    if (orgHeroCardVerifiedValue) {
+      orgHeroCardVerifiedValue.textContent = formatPercentValue(verifiedPercent);
+    }
+    if (orgHeroCardVerifiedLabel) {
+      orgHeroCardVerifiedLabel.textContent = `${verifiedMembers} de ${totalMembers} com e-mail verificado`;
+    }
+
+    if (orgHeroCardPerformanceValue) {
+      orgHeroCardPerformanceValue.textContent = formatPercentValue(performancePercent);
+    }
+    if (orgHeroCardPerformanceLabel) {
+      orgHeroCardPerformanceLabel.textContent = "Média consolidada do desempenho competitivo";
+    }
+
+    if (orgHeroCardPendingValue) {
+      orgHeroCardPendingValue.textContent = String(pendingOps.totalPending);
+    }
+    if (orgHeroCardPendingLabel) {
+      orgHeroCardPendingLabel.textContent =
+        `${pendingOps.pendingRequests} aprovações + ${pendingOps.pendingEmail} e-mails pendentes`;
+    }
+
+    renderDashboardHeroTrend(lastPerformanceSummarySnapshot || performanceBoardSnapshot?.summary || null);
+    renderDashboardHeroBars(lastPerformanceSummarySnapshot || performanceBoardSnapshot?.summary || null);
+    renderDashboardHeroTable(performanceBoardSnapshot);
+
+    if (orgHeroTrendTitle) {
+      orgHeroTrendTitle.textContent = performanceCurrentWeek
+        ? `Evolução semanal até ${performanceCurrentWeek}`
+        : "Evolução semanal";
+    }
+  }
+
   function parsePerformanceBullets(textValue) {
     return String(textValue || "")
       .split(/\r?\n/g)
