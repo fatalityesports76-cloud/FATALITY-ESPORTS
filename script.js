@@ -3003,13 +3003,20 @@ function initOrgAccess() {
       performanceBoardMode = "";
       performanceCurrentWeek = "";
       performanceBoardSnapshot = null;
+      memberDirectorySnapshot = [];
       orgToggle.textContent = "Login Org";
       orgToggle.classList.remove("is-authenticated");
       setState("Informe suas credenciais da org.");
+      updateOrgAccessSummary(null);
       pendingLoginVerificationId = "";
       orgLoginVerificationIdInput.value = "";
       setLoginVerifyLead("");
       setMode("login");
+      resetOrgPanelTabs();
+      if (orgDashboard) {
+        orgDashboard.classList.add("hidden");
+        orgDashboard.hidden = true;
+      }
       if (orgModeSwitch) {
         orgModeSwitch.classList.remove("hidden");
       }
@@ -3067,6 +3074,10 @@ function initOrgAccess() {
       if (orgEmailCurrent) {
         orgEmailCurrent.textContent = "-";
       }
+      if (orgMemberProfileSelect) {
+        orgMemberProfileSelect.innerHTML = "";
+      }
+      renderSelectedMemberProfile("");
       if (orgChip) {
         orgChip.classList.add("hidden");
         orgChip.hidden = true;
@@ -3100,6 +3111,7 @@ function initOrgAccess() {
       orgChip.classList.remove("hidden");
       orgChip.hidden = false;
     }
+    updateOrgAccessSummary(session);
 
     if (orgModeSwitch) {
       orgModeSwitch.classList.add("hidden");
@@ -3110,6 +3122,10 @@ function initOrgAccess() {
     });
     orgLogout.classList.remove("hidden");
     orgLogout.hidden = false;
+    if (orgDashboard) {
+      orgDashboard.classList.remove("hidden");
+      orgDashboard.hidden = false;
+    }
     if (orgPasswordChange) {
       orgPasswordChange.classList.remove("hidden");
       orgPasswordChange.hidden = false;
@@ -3160,6 +3176,7 @@ function initOrgAccess() {
       orgOwnerAssume.classList.toggle("hidden", !canAssume);
       orgOwnerAssume.hidden = !canAssume;
     }
+    setOrgPanelTab(activeOrgPanelTab || "access", session);
     syncDirectCreateRoleOptions();
   }
 
