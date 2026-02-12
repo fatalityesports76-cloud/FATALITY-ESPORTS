@@ -4570,6 +4570,14 @@ body.mobile-performance .reveal.visible {
     grid-template-columns: 1fr;
   }
 
+  .org-enterprise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .org-enterprise-actions {
+    grid-template-columns: 1fr;
+  }
+
   body.org-dashboard-layout .org-panel-tab-strip {
     position: static;
   }
