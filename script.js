@@ -2329,6 +2329,8 @@ function initOrgAccess() {
         ? `Evolução semanal até ${performanceCurrentWeek}`
         : "Evolução semanal";
     }
+
+    updateEnterpriseWidgets();
   }
 
   function parsePerformanceBullets(textValue) {
