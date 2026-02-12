@@ -641,7 +641,7 @@ body.org-dashboard-layout .org-access-panel {
 body.org-dashboard-layout .org-dashboard {
   margin-top: 0.6rem;
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 0.72rem;
   align-items: start;
 }
@@ -991,21 +991,24 @@ body.org-dashboard-layout .org-dashboard-top {
 }
 
 body.org-dashboard-layout .org-panel-tab-strip {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.36rem;
-  align-content: start;
+  align-items: center;
   border: 1px solid rgba(232, 151, 255, 0.3);
   border-radius: 12px;
   padding: 0.54rem;
   background:
     radial-gradient(120% 90% at 96% 4%, rgba(255, 222, 255, 0.14), transparent 56%),
     linear-gradient(150deg, rgba(26, 10, 46, 0.92), rgba(10, 4, 21, 0.94));
-  position: sticky;
-  top: 0.88rem;
+  position: static;
+  top: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .org-panel-nav-head {
-  display: grid;
+  display: none;
   gap: 0.2rem;
   margin-bottom: 0.24rem;
   padding-bottom: 0.44rem;
@@ -1031,6 +1034,7 @@ body.org-dashboard-layout .org-panel-tab-strip {
 }
 
 .org-panel-nav-group {
+  display: none;
   margin: 0.18rem 0 0;
   color: #dec0f0;
   text-transform: uppercase;
@@ -1040,14 +1044,15 @@ body.org-dashboard-layout .org-panel-tab-strip {
 }
 
 body.org-dashboard-layout .org-panel-tab-btn {
-  width: 100%;
+  width: auto;
+  flex: 0 0 auto;
   justify-content: flex-start;
   font-size: 0.62rem;
   padding: 0.44rem 0.5rem;
 }
 
 body.org-dashboard-layout .org-panel-section {
-  grid-column: 2;
+  grid-column: 1;
   border: 1px solid rgba(232, 151, 255, 0.26);
   border-radius: 12px;
   padding: 0.56rem;
