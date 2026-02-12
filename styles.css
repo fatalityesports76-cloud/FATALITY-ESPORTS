@@ -516,6 +516,75 @@ main > .section,
   color: #ffffff;
 }
 
+.org-dashboard {
+  margin-top: 0.64rem;
+  display: grid;
+  gap: 0.58rem;
+}
+
+.org-panel-tab-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+}
+
+.org-panel-tab-btn {
+  border: 1px solid rgba(220, 128, 255, 0.42);
+  border-radius: 9px;
+  background: rgba(24, 9, 42, 0.82);
+  color: #f4dcff;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.58rem;
+  padding: 0.38rem 0.52rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.org-panel-tab-btn:hover {
+  border-color: rgba(247, 193, 255, 0.74);
+}
+
+.org-panel-tab-btn.is-active {
+  border-color: rgba(248, 193, 255, 0.96);
+  background: linear-gradient(140deg, rgba(199, 102, 255, 0.44), rgba(112, 39, 170, 0.5));
+  color: #fff;
+}
+
+.org-panel-section {
+  margin: 0;
+}
+
+.org-session-summary {
+  display: grid;
+  gap: 0.32rem;
+  border: 1px solid rgba(220, 138, 255, 0.26);
+  border-radius: 10px;
+  padding: 0.5rem;
+  background: rgba(11, 4, 21, 0.68);
+}
+
+.org-session-summary p {
+  margin: 0;
+  color: #f2dbff;
+  font-size: 0.8rem;
+}
+
+.org-member-profile-picker {
+  display: block;
+  margin-bottom: 0.42rem;
+  color: #f2d5ff;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+}
+
+.org-member-profile-picker select {
+  margin-top: 0.22rem;
+}
+
 .org-role-chip {
   border: 1px solid rgba(201, 236, 255, 0.45);
   border-radius: 999px;
