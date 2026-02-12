@@ -3324,6 +3324,8 @@ function initOrgAccess() {
       performanceBoardMode = "";
       performanceCurrentWeek = "";
       performanceBoardSnapshot = null;
+      lastPerformanceSummarySnapshot = null;
+      lastPanelDataSnapshot = null;
       memberDirectorySnapshot = [];
       orgToggle.textContent = "Login Org";
       orgToggle.classList.remove("is-authenticated");
@@ -3360,6 +3362,9 @@ function initOrgAccess() {
       }
       if (orgMemberFilterEmail) {
         orgMemberFilterEmail.value = "";
+      }
+      if (orgDashboardSearchInput) {
+        orgDashboardSearchInput.value = "";
       }
       closeMemberEditModal();
       if (orgAdvancedOps) {
@@ -3406,6 +3411,7 @@ function initOrgAccess() {
       }
       resetEmailChangeFlow();
       syncDirectCreateRoleOptions();
+      updateDashboardHero();
       return;
     }
 
@@ -3508,6 +3514,7 @@ function initOrgAccess() {
     }
     setOrgPanelTab(activeOrgPanelTab || "access", session);
     syncDirectCreateRoleOptions();
+    updateDashboardHero();
   }
 
   sanitizeNumericInputs(orgAccessRoot);
