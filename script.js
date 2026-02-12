@@ -3880,6 +3880,52 @@ function initOrgAccess() {
     });
   });
 
+  function focusCurrentPanelSection() {
+    const section = orgPanelSections.find((item) => !item.hidden && !item.classList.contains("hidden"));
+    if (!section) {
+      return;
+    }
+    section.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start"
+    });
+  }
+
+  orgQuickTabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!currentSession) {
+        return;
+      }
+      const tabKey = String(button.dataset.orgQuickTab || "").trim();
+      if (!tabKey) {
+        return;
+      }
+      setOrgPanelTab(tabKey, currentSession);
+      focusCurrentPanelSection();
+    });
+  });
+
+  orgQuickActionButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!currentSession) {
+        return;
+      }
+      const actionKey = String(button.dataset.orgQuickAction || "").trim();
+      if (actionKey !== "refresh_all") {
+        return;
+      }
+
+      setState("Atualizando módulos do painel...", "#9fd0ff");
+      const tasks = [refreshMemberDataPanel(), refreshPerformanceBoard(true)];
+      if (isApprovalRole(currentSession.role)) {
+        tasks.push(refreshOwnerRequests(), refreshMemberStatuses());
+      }
+      await Promise.allSettled(tasks);
+      updateDashboardHero();
+      setState("Painel sincronizado com sucesso.", "#9ff7d8");
+    });
+  });
+
   orgLoginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
