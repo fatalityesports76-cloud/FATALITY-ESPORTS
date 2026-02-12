@@ -836,6 +836,22 @@ function initOrgAccess() {
   const orgHeroLinePath = orgAccessRoot.querySelector("[data-org-hero-line-path]");
   const orgHeroBars = Array.from(orgAccessRoot.querySelectorAll("[data-org-hero-bar]"));
   const orgHeroTableBody = orgAccessRoot.querySelector("[data-org-hero-table-body]");
+  const orgEnterpriseStamp = orgAccessRoot.querySelector("[data-org-enterprise-stamp]");
+  const orgEnterpriseAlerts = orgAccessRoot.querySelector("[data-org-enterprise-alerts]");
+  const orgEnterpriseRadarBars = Array.from(orgAccessRoot.querySelectorAll("[data-org-enterprise-radar]"));
+  const orgEnterpriseRadarValues = Array.from(
+    orgAccessRoot.querySelectorAll("[data-org-enterprise-radar-value]")
+  );
+  const orgEnterpriseLeadership = orgAccessRoot.querySelector("[data-org-enterprise-leadership]");
+  const orgEnterprisePasswordReset = orgAccessRoot.querySelector("[data-org-enterprise-password-reset]");
+  const orgEnterprisePendingRequests = orgAccessRoot.querySelector(
+    "[data-org-enterprise-pending-requests]"
+  );
+  const orgEnterprisePendingEmails = orgAccessRoot.querySelector("[data-org-enterprise-pending-emails]");
+  const orgEnterpriseTopPlayer = orgAccessRoot.querySelector("[data-org-enterprise-top-player]");
+  const orgEnterpriseTopScore = orgAccessRoot.querySelector("[data-org-enterprise-top-score]");
+  const orgQuickTabButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-quick-tab]"));
+  const orgQuickActionButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-quick-action]"));
   const isOrgPage = orgAccessRoot.hasAttribute("data-org-page");
   const pathnameLower = String(window.location.pathname || "").toLowerCase();
   const isOrgLoginPage = pathnameLower.endsWith("/login") || pathnameLower.endsWith("/login.html");
