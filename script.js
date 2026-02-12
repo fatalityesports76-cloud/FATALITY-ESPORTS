@@ -1882,13 +1882,11 @@ function initOrgAccess() {
     });
 
     const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
-    const linePath = `M ${points.map((point) => `${point.x} ${point.y}`).join(" L ")}`;
     const areaPath = `M ${points[0].x} ${maxY} L ${points
       .map((point) => `${point.x} ${point.y}`)
       .join(" L ")} L ${points[points.length - 1].x} ${maxY} Z`;
 
     return {
-      linePath,
       areaPath,
       polyline
     };
@@ -1901,7 +1899,6 @@ function initOrgAccess() {
 
     const points = buildHeroTrendPoints(summary);
     orgHeroLinePath.setAttribute("points", points.polyline);
-    orgHeroLinePath.setAttribute("d", points.linePath);
     orgHeroLineArea.setAttribute("d", points.areaPath);
   }
 
