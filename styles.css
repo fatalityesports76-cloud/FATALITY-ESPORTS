@@ -122,8 +122,10 @@ body.cookie-consent-lock {
     radial-gradient(42% 24% at 50% 95%, rgba(212, 108, 255, 0.2), transparent 70%),
     linear-gradient(180deg, rgba(5, 3, 12, 0.82) 0%, rgba(8, 4, 16, 0.88) 45%, rgba(4, 2, 9, 0.93) 100%),
     image-set(
-      url("assets/fatality-site-bg-768.jpg") 1x,
-      url("assets/fatality-site-bg-1024.jpg") 2x
+      url("assets/fatality-site-bg-768.webp") type("image/webp") 1x,
+      url("assets/fatality-site-bg-1024.webp") type("image/webp") 2x,
+      url("assets/fatality-site-bg-768.jpg") type("image/jpeg") 1x,
+      url("assets/fatality-site-bg-1024.jpg") type("image/jpeg") 2x
     )
       center / cover no-repeat;
   background-blend-mode: screen, screen, screen, normal, overlay;
