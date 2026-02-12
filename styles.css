@@ -4926,12 +4926,10 @@ body.org-dashboard-layout {
 }
 
 body.org-dashboard-layout .org-dashboard-title {
-  background: linear-gradient(90deg, #fff1ff 0%, #f3d1ff 55%, #e3b3ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #fff0ff;
   font-size: clamp(0.96rem, 1.4vw, 1.22rem);
   letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgba(210, 103, 255, 0.3);
 }
 
 body.org-dashboard-layout .org-dashboard-subtitle {
@@ -5111,6 +5109,11 @@ body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
   box-shadow:
     inset -1px 0 0 rgba(240, 177, 255, 0.16),
     0 14px 32px rgba(0, 0, 0, 0.36);
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-title {
+  font-size: clamp(1.32rem, 2vw, 1.9rem);
+  letter-spacing: 0.04em;
 }
 
 body.org-dashboard-layout.org-authenticated .org-panel-tab-btn {
