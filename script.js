@@ -1940,7 +1940,24 @@ function initOrgAccess() {
     }
 
     orgHeroTableBody.innerHTML = "";
-    const rows = buildPerformanceRankingRows(boardData).slice(0, 5);
+    let rows = buildPerformanceRankingRows(boardData).slice(0, 5);
+    if (rows.length === 0 && String(boardData?.mode || "") === "player" && boardData?.player) {
+      const identity = String(boardData.player.fullName || boardData.player.inGameName || "").trim();
+      rows = [
+        {
+          userNumber: String(boardData.player.userNumber || ""),
+          fullName: identity || "Meu perfil",
+          inGameName: String(boardData.player.inGameName || "").trim(),
+          weekPercent:
+            boardData?.summary?.currentWeekPercent === null ||
+            boardData?.summary?.currentWeekPercent === undefined
+              ? null
+              : normalizePercentValue(boardData.summary.currentWeekPercent),
+          overallPercent: normalizePercentValue(boardData?.summary?.overallPercent || 0)
+        }
+      ];
+    }
+
     if (rows.length === 0) {
       const tr = document.createElement("tr");
       ["Sem dados", "-", "-", "-"].forEach((value) => {
