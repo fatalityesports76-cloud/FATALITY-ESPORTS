@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatality E-sports | Login Org</title>
+  <meta name="description" content="Acesso da organização Fatality E-sports para equipe, staff e liderança.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://fatality-e-sports-official.com.br/login">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260210b">
+  <link rel="icon" type="image/png" sizes="256x256" href="/assets/favicon-256.png?v=20260210b">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260210b">
+  <link rel="apple-touch-icon" href="/assets/favicon-256.png?v=20260210b">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="landing-toxic">
+  <div class="bg-shape bg-shape-a" aria-hidden="true"></div>
+  <div class="bg-shape bg-shape-b" aria-hidden="true"></div>
+
+  <section class="section reveal">
+    <div class="brand-strip">
+      <div class="brand-left">
+        <a class="brand-logo-link" href="/" aria-label="Voltar para a página inicial">
+          <img
+            class="corner-logo"
+            src="assets/fatality-logo-128.webp"
+            width="128"
+            height="192"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            alt="Logo Fatality E-sports"
+          >
+        </a>
+        <p class="brand-title">Fatality E-Sports</p>
+      </div>
+      <div class="brand-right">
+        <nav class="brand-nav" aria-label="Navegação principal">
+          <a href="/">Home</a>
+          <a href="/#sobre">Sobre</a>
+          <a href="/#recrutamento">Recrutamento</a>
+          <a href="/#processo">Processo</a>
+          <a href="/#contato">Contato</a>
+        </nav>
+        <a class="org-access-toggle" href="formulario.html">Formulário</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal login-stage">
+    <div class="login-shell">
+      <p class="kicker">Painel da Organização</p>
+      <h1 class="home-title">Login Org Fatality</h1>
+      <p class="home-lead">
+        Acesse com seu número da credencial para entrar no sistema interno da org,
+        cadastrar membros diretamente no painel (dono, líder, vice-líder e ADM),
+        confirmar e-mail de acesso e alterar senha dentro do painel.
+      </p>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="org-access org-access-page" data-org-access data-org-page>
+      <button
+        class="org-access-toggle"
+        type="button"
+        data-org-toggle
+        aria-expanded="true"
+        aria-controls="org-access-panel"
+      >
+        Login Org
+      </button>
+      <span class="org-role-chip hidden" data-org-chip aria-live="polite"></span>
+      <div class="org-access-panel" id="org-access-panel" data-org-panel>
+        <p class="org-access-title">Acesso da organização</p>
+        <div class="org-mode-switch" role="tablist" aria-label="Modos de acesso da org">
+          <button class="org-mode-btn is-active" type="button" data-org-mode-btn="login">Entrar</button>
+        </div>
+        <form class="org-access-form" data-org-login-form data-org-mode-panel="login" novalidate>
+          <label>
+            Número da credencial
+            <input type="text" name="userNumber" inputmode="numeric" pattern="^[0-9]{4,12}$" required>
+          </label>
+          <label>
+            Senha
+            <input type="password" name="password" minlength="8" autocomplete="current-password" required>
+          </label>
+          <button class="btn btn-primary org-access-submit" type="submit">Entrar no sistema</button>
+        </form>
+        <form class="org-access-form hidden" data-org-login-verify-form data-org-mode-panel="login_verify" hidden novalidate>
+          <input type="hidden" name="verificationId" data-org-login-verification-id>
+          <p class="org-access-title" data-org-login-verify-lead>
+            Digite o código de e-mail para concluir o login.
+          </p>
+          <label>
+            Código de verificação
+            <input type="text" name="code" inputmode="numeric" pattern="^[0-9]{6}$" maxlength="6" required>
+          </label>
+          <div class="org-register-review-actions">
+            <button class="btn btn-primary" type="submit">Confirmar e entrar</button>
+            <button class="btn btn-secondary" type="button" data-org-login-verify-back>Voltar</button>
+          </div>
+        </form>
+        <div class="org-dashboard hidden" data-org-dashboard hidden>
+          <div class="org-panel-tab-strip" data-org-panel-tab-strip role="tablist" aria-label="Abas do painel da organização">
+            <button class="org-panel-tab-btn is-active" type="button" data-org-panel-tab="access">
+              <span class="org-panel-tab-icon" aria-hidden="true">AC</span>
+              <span class="org-panel-tab-label">Acesso da organização</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="direct_create">
+              <span class="org-panel-tab-icon" aria-hidden="true">CD</span>
+              <span class="org-panel-tab-label">Cadastro direto de membro</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="credential_ops">
+              <span class="org-panel-tab-icon" aria-hidden="true">CR</span>
+              <span class="org-panel-tab-label">Gestão de credenciais e senha</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="full_data">
+              <span class="org-panel-tab-icon" aria-hidden="true">PA</span>
+              <span class="org-panel-tab-label">Painel completo da organização</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="performance">
+              <span class="org-panel-tab-icon" aria-hidden="true">DP</span>
+              <span class="org-panel-tab-label">Desempenho</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="member_profile">
+              <span class="org-panel-tab-icon" aria-hidden="true">MB</span>
+              <span class="org-panel-tab-label">Cadastro completo de membro</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="password">
+              <span class="org-panel-tab-icon" aria-hidden="true">SN</span>
+              <span class="org-panel-tab-label">Alteração de senha</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="email">
+              <span class="org-panel-tab-icon" aria-hidden="true">EM</span>
+              <span class="org-panel-tab-label">Atualização de e-mail da conta</span>
+            </button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="full_panel">
+              <span class="org-panel-tab-icon" aria-hidden="true">AP</span>
+              <span class="org-panel-tab-label">Aprovações e status</span>
+            </button>
+          </div>
+
+          <section class="org-panel-section hidden" data-org-panel-section="access" hidden>
+            <div class="org-owner-tools">
+              <p class="org-owner-title">Acesso da organização</p>
+              <div class="org-session-summary">
+                <p><strong>Credencial:</strong> <span data-org-summary-credential>-</span></p>
+                <p><strong>Cargo:</strong> <span data-org-summary-role>-</span></p>
+                <p><strong>E-mail:</strong> <span data-org-summary-email>-</span></p>
+                <p><strong>Status do e-mail:</strong> <span data-org-summary-email-status>-</span></p>
+                <p><strong>Status da senha:</strong> <span data-org-summary-password-status>-</span></p>
+              </div>
+            </div>
+          </section>
+
+        <div class="org-owner-tools hidden" data-org-owner-tools hidden>
+          <div class="org-panel-section hidden" data-org-panel-section="full_panel" hidden>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Aprovações pendentes</p>
+            <button class="btn btn-secondary org-owner-refresh" type="button" data-org-owner-refresh>Atualizar</button>
+          </div>
+          <div class="org-owner-list" data-org-owner-list></div>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Status de verificação de e-mail</p>
+            <button class="btn btn-secondary org-owner-refresh" type="button" data-org-members-refresh>Atualizar</button>
+          </div>
+          <div class="org-owner-list" data-org-members-list></div>
+          <div class="org-admin-dashboard hidden" data-org-admin-dashboard hidden>
+            <div class="org-admin-kpis">
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-total>0</p>
+                <p class="org-admin-kpi-label">Membros ativos</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-verified>0</p>
+                <p class="org-admin-kpi-label">E-mail verificado</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-pending>0</p>
+                <p class="org-admin-kpi-label">E-mail pendente</p>
+              </article>
+              <article class="org-admin-kpi">
+                <p class="org-admin-kpi-value" data-org-kpi-leadership>0</p>
+                <p class="org-admin-kpi-label">Liderança ativa</p>
+              </article>
+            </div>
+            <div class="org-admin-toolbar">
+              <label>
+                Buscar membro
+                <input type="search" data-org-member-search maxlength="120" placeholder="Nome, credencial, e-mail ou nick">
+              </label>
+              <label>
+                Filtrar por cargo
+                <select data-org-member-filter-role>
+                  <option value="">Todos</option>
+                  <option value="dono">Dono</option>
+                  <option value="lider">Líder</option>
+                  <option value="vice_lider">Vice-líder</option>
+                  <option value="adm">ADM</option>
+                  <option value="staff">Staff</option>
+                  <option value="player">Player</option>
+                </select>
+              </label>
+              <label>
+                Verificação de e-mail
+                <select data-org-member-filter-email>
+                  <option value="">Todos</option>
+                  <option value="verified">Verificado</option>
+                  <option value="pending">Pendente</option>
+                </select>
+              </label>
+              <button class="btn btn-secondary" type="button" data-org-member-clear-filters>Limpar filtros</button>
+            </div>
+          </div>
+          </div>
+          <div class="org-panel-section hidden" data-org-panel-section="direct_create" hidden>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Cadastro direto de membro</p>
+          </div>
+          <form class="org-access-form" data-org-direct-create-form novalidate>
+            <label>
+              Nome completo
+              <input type="text" name="fullName" minlength="5" maxlength="120" required>
+            </label>
+            <label>
+              E-mail
+              <input type="email" name="email" maxlength="120" required>
+            </label>
+            <label>
+              Nome no jogo
+              <input type="text" name="inGameName" minlength="2" maxlength="40" required>
+            </label>
+            <label>
+              ID no jogo
+              <input type="text" name="gameId" inputmode="numeric" pattern="^[0-9]{4,20}$" required>
+            </label>
+            <label>
+              ID do servidor
+              <input type="text" name="serverId" inputmode="numeric" pattern="^[0-9]{3,20}$" required>
+            </label>
+            <label>
+              WhatsApp (somente números)
+              <input type="text" name="whatsapp" inputmode="numeric" pattern="^[0-9]{10,20}$">
+            </label>
+            <label>
+              Cargo do membro
+              <select name="role" required>
+                <option value="">Selecione</option>
+                <option value="player">Player</option>
+                <option value="vice_lider">Vice-líder</option>
+                <option value="staff">Staff</option>
+                <option value="adm">ADM</option>
+                <option value="lider">Líder</option>
+                <option value="dono">Dono</option>
+              </select>
+            </label>
+            <label>
+              Como a pessoa se identifica
+              <select name="identificacaoGenero" required>
+                <option value="">Selecione</option>
+                <option value="Homem cisgenero">Homem cisgênero</option>
+                <option value="Mulher cisgenero">Mulher cisgênero</option>
+                <option value="Homem trans">Homem trans</option>
+                <option value="Mulher trans">Mulher trans</option>
+                <option value="Transexual">Transexual</option>
+                <option value="Travesti">Travesti</option>
+                <option value="Nao binario">Não binário</option>
+                <option value="Genero fluido">Gênero fluido</option>
+                <option value="Agenero">Agênero</option>
+                <option value="Intersexo">Intersexo</option>
+                <option value="Outro">Outro</option>
+                <option value="Prefiro nao informar">Prefiro não informar</option>
+              </select>
+            </label>
+            <label>
+              Observação
+              <input type="text" name="note" maxlength="240" placeholder="Opcional">
+            </label>
+            <button class="btn btn-primary org-access-submit" type="submit">Cadastrar membro e gerar credencial</button>
+          </form>
+          </div>
+          <div class="org-owner-ops hidden org-panel-section" data-org-advanced-ops data-org-panel-section="credential_ops" hidden>
+            <p class="org-owner-title">Gestão de credenciais e senha</p>
+            <label>
+              Credencial alvo
+              <input type="text" data-org-owner-target inputmode="numeric" pattern="^[0-9]{4,12}$" placeholder="Ex.: 100001">
+            </label>
+            <div class="org-owner-ops-actions">
+              <button class="btn btn-secondary" type="button" data-org-owner-assume>Assumir conta</button>
+              <button class="btn btn-secondary" type="button" data-org-owner-force-reset>Resetar senha</button>
+            </div>
+            <p class="org-access-state">"Assumir conta" é exclusivo para dono e líder.</p>
+            <label>
+              Nova credencial
+              <input type="text" data-org-owner-new-credential inputmode="numeric" pattern="^[0-9]{4,12}$" placeholder="Ex.: 100145">
+            </label>
+            <div class="org-owner-ops-actions">
+              <button class="btn btn-secondary" type="button" data-org-owner-change-credential>Atualizar credencial</button>
+            </div>
+          </div>
+        </div>
+        <div class="org-member-data hidden" data-org-member-data hidden>
+          <div class="org-panel-section hidden" data-org-panel-section="full_data" hidden>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Painel completo da organização</p>
+            <button class="btn btn-secondary org-owner-refresh" type="button" data-org-member-data-refresh>Atualizar</button>
+          </div>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Seu cadastro completo</p>
+          </div>
+          <div class="org-owner-list" data-org-member-self-list></div>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Todos os membros cadastrados</p>
+          </div>
+          <div class="org-owner-list" data-org-member-users-list></div>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Solicitações de cadastro da org</p>
+          </div>
+          <div class="org-owner-list" data-org-member-requests-list></div>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Pré-cadastro do recrutamento</p>
+          </div>
+          <div class="org-owner-list" data-org-member-prereg-list></div>
+          </div>
+          <div class="org-panel-section hidden" data-org-panel-section="performance" hidden>
+          <div class="org-owner-head">
+            <p class="org-owner-title">Desempenho (planilha)</p>
+            <button class="btn btn-secondary org-owner-refresh" type="button" data-org-performance-refresh>Atualizar</button>
+          </div>
+          <div class="org-performance-shell" data-org-performance-shell>
+            <div class="org-performance-grid">
+              <section class="org-performance-card">
+                <div class="org-performance-card-head">
+                  <p class="org-performance-card-title" data-org-performance-title>Painel do jogador</p>
+                  <div class="org-performance-picker" data-org-performance-picker>
+                    <label>
+                      Jogador
+                      <select data-org-performance-player-select></select>
+                    </label>
+                  </div>
+                </div>
+                <div class="org-performance-summary" data-org-performance-summary aria-live="polite"></div>
+              </section>
+              <section class="org-performance-card hidden" data-org-performance-editor hidden>
+                <p class="org-performance-card-title">Atualização semanal</p>
+                <form class="org-access-form org-performance-form" data-org-performance-form novalidate>
+                  <input type="hidden" name="playerUserNumber" data-org-performance-player-input>
+                  <label>
+                    Semana (ISO)
+                    <input
+                      type="text"
+                      name="week"
+                      pattern="^[0-9]{4}-W[0-9]{2}$"
+                      placeholder="Ex.: 2026-W07"
+                    >
+                  </label>
+                  <div class="org-performance-scores" data-org-performance-scores></div>
+                  <label>
+                    Pontos fortes (1 por linha)
+                    <textarea
+                      name="strengths"
+                      rows="4"
+                      maxlength="800"
+                      placeholder="Ex.: Comunicação no early game"
+                    ></textarea>
+                  </label>
+                  <label>
+                    A melhorar (1 por linha)
+                    <textarea
+                      name="improvements"
+                      rows="4"
+                      maxlength="800"
+                      placeholder="Ex.: Controle de wave na Gold Lane"
+                    ></textarea>
+                  </label>
+                  <label>
+                    Observação (opcional)
+                    <textarea name="note" rows="3" maxlength="600" placeholder="Texto livre"></textarea>
+                  </label>
+                  <button class="btn btn-primary org-access-submit" type="submit">Salvar atualização</button>
+                </form>
+                <div class="org-performance-weekly" data-org-performance-weekly></div>
+              </section>
+              <section class="org-performance-card">
+                <p class="org-performance-card-title">Ranking semanal</p>
+                <div class="org-performance-ranking" data-org-performance-ranking aria-live="polite"></div>
+              </section>
+            </div>
+            <p class="org-performance-hint" data-org-performance-hint></p>
+          </div>
+          </div>
+        </div>
+        <section class="org-panel-section hidden" data-org-panel-section="member_profile" hidden>
+          <div class="org-owner-tools">
+            <div class="org-owner-head">
+              <p class="org-owner-title">Selecionar membro e ver cadastro completo</p>
+            </div>
+            <label class="org-member-profile-picker">
+              Nome do membro
+              <select data-org-member-profile-select></select>
+            </label>
+            <div class="org-owner-list" data-org-member-profile-view></div>
+          </div>
+        </section>
+        <div class="org-password-change hidden org-panel-section" data-org-password-change data-org-panel-section="password" hidden>
+          <p class="org-owner-title">Trocar senha agora</p>
+          <form class="org-access-form" data-org-password-change-form novalidate>
+            <label>
+              Senha atual
+              <input type="password" name="currentPassword" minlength="8" maxlength="160" required>
+            </label>
+            <label>
+              Nova senha
+              <input type="password" name="newPassword" minlength="8" maxlength="160" required>
+            </label>
+            <button class="btn btn-secondary org-access-submit" type="submit">Atualizar senha</button>
+          </form>
+        </div>
+        <div class="org-password-change hidden org-panel-section" data-org-email-change data-org-panel-section="email" hidden>
+          <p class="org-owner-title">Atualizar e-mail da conta</p>
+          <p class="org-email-current">
+            E-mail atual: <strong data-org-email-current>-</strong>
+          </p>
+          <div data-org-email-change-request>
+            <form class="org-access-form" data-org-email-change-request-form novalidate>
+              <label>
+                Senha atual
+                <input type="password" name="currentPassword" minlength="8" maxlength="160" required>
+              </label>
+              <label>
+                Novo e-mail
+                <input type="email" name="newEmail" maxlength="120" required>
+              </label>
+              <label>
+                Confirmar novo e-mail
+                <input type="email" name="newEmailConfirm" maxlength="120" required>
+              </label>
+              <button class="btn btn-secondary org-access-submit" type="submit">Enviar código</button>
+            </form>
+          </div>
+          <div class="hidden" data-org-email-change-confirm hidden>
+            <form class="org-access-form" data-org-email-change-confirm-form novalidate>
+              <input type="hidden" name="verificationId" data-org-email-change-verification-id>
+              <label>
+                Código de verificação
+                <input type="text" name="code" inputmode="numeric" pattern="^[0-9]{6}$" maxlength="6" required>
+              </label>
+              <div class="org-register-review-actions">
+                <button class="btn btn-primary" type="submit">Confirmar e-mail</button>
+                <button class="btn btn-secondary" type="button" data-org-email-change-cancel>Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        </div>
+        <p class="org-access-state" data-org-state role="status" aria-live="polite">Informe suas credenciais da org.</p>
+        <button class="btn btn-secondary org-access-logout hidden" type="button" data-org-logout hidden>Sair</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="org-member-edit-modal hidden" data-org-member-edit-modal hidden aria-hidden="true">
+    <div class="org-member-edit-backdrop" data-org-member-edit-cancel></div>
+    <div class="org-member-edit-card" role="dialog" aria-modal="true" aria-label="Atualizar cadastro de membro">
+      <p class="org-owner-title">Atualizar cadastro de membro</p>
+      <p class="org-access-state" data-org-member-edit-lead>Revise e atualize os dados do cadastro.</p>
+      <form class="org-access-form" data-org-member-edit-form novalidate>
+        <input type="hidden" name="userNumber">
+        <label>
+          Nome completo
+          <input type="text" name="fullName" minlength="5" maxlength="120" required>
+        </label>
+        <label>
+          E-mail
+          <input type="email" name="email" maxlength="120" required>
+        </label>
+        <label>
+          Nome no jogo
+          <input type="text" name="inGameName" minlength="2" maxlength="40" required>
+        </label>
+        <label>
+          ID no jogo
+          <input type="text" name="gameId" inputmode="numeric" pattern="^[0-9]{4,20}$" required>
+        </label>
+        <label>
+          ID do servidor
+          <input type="text" name="serverId" inputmode="numeric" pattern="^[0-9]{3,20}$" required>
+        </label>
+        <label>
+          WhatsApp (somente números)
+          <input type="text" name="whatsapp" inputmode="numeric" pattern="^[0-9]{10,20}$">
+        </label>
+        <label>
+          Como a pessoa se identifica
+          <select name="identificacaoGenero" required>
+            <option value="">Selecione</option>
+            <option value="Homem cisgenero">Homem cisgênero</option>
+            <option value="Mulher cisgenero">Mulher cisgênero</option>
+            <option value="Homem trans">Homem trans</option>
+            <option value="Mulher trans">Mulher trans</option>
+            <option value="Transexual">Transexual</option>
+            <option value="Travesti">Travesti</option>
+            <option value="Nao binario">Não binário</option>
+            <option value="Genero fluido">Gênero fluido</option>
+            <option value="Agenero">Agênero</option>
+            <option value="Intersexo">Intersexo</option>
+            <option value="Outro">Outro</option>
+            <option value="Prefiro nao informar">Prefiro não informar</option>
+          </select>
+        </label>
+        <label>
+          Observação
+          <input type="text" name="note" maxlength="240" placeholder="Opcional">
+        </label>
+        <div class="org-register-review-actions">
+          <button class="btn btn-primary" type="submit">Salvar atualização</button>
+          <button class="btn btn-secondary" type="button" data-org-member-edit-cancel>Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="section footer" id="contato">
+    <p class="copyright">
+      <strong>Parcerias:</strong> fatalityesports76@gmail.com
+    </p>
+    <p class="footer-links">
+      <a href="termos.html">Termos</a>
+      <span>|</span>
+      <a href="politica.html">Política</a>
+      <span>|</span>
+      <a href="privacidade.html">Privacidade</a>
+    </p>
+    <p class="copyright">
+      Copyright &copy; 2026 Fatality E-sports. Todos os direitos reservados. | Recrutamento oficial.
+    </p>
+  </footer>
+
+  <script src="script.js" defer></script>
+  <script src="anti-inspect.js" defer></script>
+</body>
+</html>
+
