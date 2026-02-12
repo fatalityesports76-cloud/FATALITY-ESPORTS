@@ -529,6 +529,9 @@ main > .section,
 }
 
 .org-panel-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   border: 1px solid rgba(220, 128, 255, 0.42);
   border-radius: 9px;
   background: rgba(24, 9, 42, 0.82);
@@ -550,6 +553,32 @@ main > .section,
   border-color: rgba(248, 193, 255, 0.96);
   background: linear-gradient(140deg, rgba(199, 102, 255, 0.44), rgba(112, 39, 170, 0.5));
   color: #fff;
+}
+
+.org-panel-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.1rem;
+  padding: 0 0.24rem;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 177, 255, 0.4);
+  background: rgba(9, 3, 19, 0.62);
+  color: #ffe9ff;
+  font-family: var(--font-heading);
+  letter-spacing: 0.06em;
+  font-size: 0.5rem;
+  line-height: 1;
+}
+
+.org-panel-tab-btn.is-active .org-panel-tab-icon {
+  border-color: rgba(255, 223, 255, 0.78);
+  background: rgba(61, 22, 95, 0.74);
+}
+
+.org-panel-tab-label {
+  white-space: nowrap;
 }
 
 .org-panel-section {
