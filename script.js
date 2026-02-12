@@ -815,6 +815,27 @@ function initOrgAccess() {
   const orgMemberEditCancelButtons = Array.from(
     document.querySelectorAll("[data-org-member-edit-cancel]")
   );
+  const orgDashboardSubtitle = orgAccessRoot.querySelector("[data-org-dashboard-subtitle]");
+  const orgDashboardSearchInput = orgAccessRoot.querySelector("[data-org-dashboard-search-input]");
+  const orgHeroPillWeek = orgAccessRoot.querySelector("[data-org-hero-pill-week]");
+  const orgHeroPillRole = orgAccessRoot.querySelector("[data-org-hero-pill-role]");
+  const orgHeroCardActiveValue = orgAccessRoot.querySelector("[data-org-hero-card-active-value]");
+  const orgHeroCardActiveLabel = orgAccessRoot.querySelector("[data-org-hero-card-active-label]");
+  const orgHeroCardVerifiedValue = orgAccessRoot.querySelector("[data-org-hero-card-verified-value]");
+  const orgHeroCardVerifiedLabel = orgAccessRoot.querySelector("[data-org-hero-card-verified-label]");
+  const orgHeroCardPerformanceValue = orgAccessRoot.querySelector(
+    "[data-org-hero-card-performance-value]"
+  );
+  const orgHeroCardPerformanceLabel = orgAccessRoot.querySelector(
+    "[data-org-hero-card-performance-label]"
+  );
+  const orgHeroCardPendingValue = orgAccessRoot.querySelector("[data-org-hero-card-pending-value]");
+  const orgHeroCardPendingLabel = orgAccessRoot.querySelector("[data-org-hero-card-pending-label]");
+  const orgHeroTrendTitle = orgAccessRoot.querySelector("[data-org-hero-trend-title]");
+  const orgHeroLineArea = orgAccessRoot.querySelector("[data-org-hero-line-area]");
+  const orgHeroLinePath = orgAccessRoot.querySelector("[data-org-hero-line-path]");
+  const orgHeroBars = Array.from(orgAccessRoot.querySelectorAll("[data-org-hero-bar]"));
+  const orgHeroTableBody = orgAccessRoot.querySelector("[data-org-hero-table-body]");
   const isOrgPage = orgAccessRoot.hasAttribute("data-org-page");
   const pathnameLower = String(window.location.pathname || "").toLowerCase();
   const isOrgLoginPage = pathnameLower.endsWith("/login") || pathnameLower.endsWith("/login.html");
@@ -895,6 +916,8 @@ function initOrgAccess() {
   let orgSessionVersion = 0;
   let memberStatusSnapshot = [];
   let memberDirectorySnapshot = [];
+  let lastPanelDataSnapshot = null;
+  let lastPerformanceSummarySnapshot = null;
   let activeOrgPanelTab = "access";
   const orgPanelTabStoragePrefix = "fatality_org_panel_tab_v1";
 
