@@ -2837,10 +2837,12 @@ function initOrgAccess() {
     }
 
     const playerLabel = getPlayerLabel(body.player || {});
+    lastPerformanceSummarySnapshot = body.summary || null;
     setPerformanceTitle(isPlayer ? "Seu desempenho" : `Painel do jogador: ${playerLabel}`);
     renderPerformanceSummary(body.player, body.summary, !isPlayer);
     renderPerformanceWeeklyInfo(body, canEdit && !isPlayer);
     renderPerformanceRanking(performanceBoardSnapshot);
+    updateDashboardHero();
 
     if (!isPlayer && canEdit && orgPerformanceForm) {
       applyPerformanceEditorWeek(body);
@@ -2892,6 +2894,7 @@ function initOrgAccess() {
     performanceBoardSnapshot = body;
 
     if (performanceBoardMode === "player" || isPlayer) {
+      lastPerformanceSummarySnapshot = body.summary || null;
       performanceSelectedPlayer = String(body?.player?.userNumber || currentSession.userNumber || "");
       setPerformancePickerVisibility(false);
       setPerformanceEditorVisibility(false);
@@ -2903,8 +2906,12 @@ function initOrgAccess() {
       renderPerformanceWeeklyInfo({ summary: body.summary || null }, false);
       renderPerformanceRanking(body);
       setPerformanceHint("Seu painel mostra a média consolidada em tempo real.");
+      updateDashboardHero();
       return;
     }
+
+    lastPerformanceSummarySnapshot = null;
+    updateDashboardHero();
 
     const players = Array.isArray(body.players) ? body.players : [];
     populatePerformancePlayerSelect(players);
