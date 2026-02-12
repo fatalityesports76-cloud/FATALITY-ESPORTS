@@ -105,41 +105,43 @@
             <div class="org-dashboard-topbar">
               <div class="org-dashboard-top-left">
                 <p class="org-dashboard-title">Painel Principal</p>
-                <p class="org-dashboard-subtitle">Central operacional da organização Fatality E-Sports</p>
+                <p class="org-dashboard-subtitle" data-org-dashboard-subtitle>
+                  Central operacional da organização Fatality E-Sports
+                </p>
               </div>
               <div class="org-dashboard-top-right">
                 <label class="org-dashboard-search">
                   <span>Buscar no painel</span>
-                  <input type="search" placeholder="Buscar membro, credencial ou e-mail">
+                  <input type="search" placeholder="Buscar membro, credencial ou e-mail" data-org-dashboard-search-input>
                 </label>
-                <div class="org-dashboard-status-row" aria-hidden="true">
+                <div class="org-dashboard-status-row">
                   <span class="org-dashboard-status-pill">Sistema online</span>
-                  <span class="org-dashboard-status-pill">Sessão segura</span>
-                  <span class="org-dashboard-status-pill">Padrão Fatality</span>
+                  <span class="org-dashboard-status-pill" data-org-hero-pill-week>Sessão segura</span>
+                  <span class="org-dashboard-status-pill" data-org-hero-pill-role>Padrão Fatality</span>
                 </div>
               </div>
             </div>
-            <div class="org-dashboard-cards" aria-hidden="true">
+            <div class="org-dashboard-cards">
               <article class="org-dashboard-card is-metric-violet">
-                <p class="org-dashboard-card-value">24/7</p>
-                <p class="org-dashboard-card-label">Sincronização ativa da operação</p>
+                <p class="org-dashboard-card-value" data-org-hero-card-active-value>0</p>
+                <p class="org-dashboard-card-label" data-org-hero-card-active-label>Membros ativos</p>
               </article>
               <article class="org-dashboard-card is-metric-pink">
-                <p class="org-dashboard-card-value">+100%</p>
-                <p class="org-dashboard-card-label">Disciplina, processo e performance</p>
+                <p class="org-dashboard-card-value" data-org-hero-card-verified-value>0%</p>
+                <p class="org-dashboard-card-label" data-org-hero-card-verified-label>E-mails verificados</p>
               </article>
               <article class="org-dashboard-card is-metric-blue">
-                <p class="org-dashboard-card-value">Comando total</p>
-                <p class="org-dashboard-card-label">Controle completo da organização</p>
+                <p class="org-dashboard-card-value" data-org-hero-card-performance-value>0%</p>
+                <p class="org-dashboard-card-label" data-org-hero-card-performance-label>Média de desempenho</p>
               </article>
               <article class="org-dashboard-card is-metric-danger">
-                <p class="org-dashboard-card-value">Zero falhas</p>
-                <p class="org-dashboard-card-label">Execução tática em padrão competitivo</p>
+                <p class="org-dashboard-card-value" data-org-hero-card-pending-value>0</p>
+                <p class="org-dashboard-card-label" data-org-hero-card-pending-label>Pendências operacionais</p>
               </article>
             </div>
-            <div class="org-dashboard-analytics" aria-hidden="true">
+            <div class="org-dashboard-analytics">
               <article class="org-dashboard-analytics-card">
-                <p class="org-dashboard-analytics-title">Evolução semanal</p>
+                <p class="org-dashboard-analytics-title" data-org-hero-trend-title>Evolução semanal</p>
                 <svg class="org-dashboard-line-chart" viewBox="0 0 420 170" aria-hidden="true">
                   <defs>
                     <linearGradient id="fatalityLineFill" x1="0" x2="0" y1="0" y2="1">
@@ -155,10 +157,12 @@
                   ></polyline>
                   <path
                     class="org-dashboard-line-area"
+                    data-org-hero-line-area
                     d="M18 142 L52 98 L84 106 L118 74 L150 78 L184 56 L218 64 L252 46 L286 54 L318 36 L350 42 L384 24 L384 142 L18 142 Z"
                   ></path>
                   <polyline
                     class="org-dashboard-line-path"
+                    data-org-hero-line-path
                     points="18,142 52,98 84,106 118,74 150,78 184,56 218,64 252,46 286,54 318,36 350,42 384,24"
                     fill="none"
                   ></polyline>
@@ -168,62 +172,50 @@
                 <p class="org-dashboard-analytics-title">Distribuição de foco</p>
                 <div class="org-mini-bars">
                   <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 40%"></span>
-                    <small>Macro</small>
+                    <span class="org-mini-bar-fill" data-org-hero-bar="disciplina" style="height: 40%"></span>
+                    <small>Disciplina</small>
                   </div>
                   <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 52%"></span>
-                    <small>Micro</small>
-                  </div>
-                  <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 64%"></span>
-                    <small>Draft</small>
-                  </div>
-                  <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 75%"></span>
+                    <span class="org-mini-bar-fill" data-org-hero-bar="comunicacao" style="height: 52%"></span>
                     <small>Comms</small>
                   </div>
                   <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 86%"></span>
-                    <small>Treino</small>
+                    <span class="org-mini-bar-fill" data-org-hero-bar="macro" style="height: 64%"></span>
+                    <small>Draft</small>
                   </div>
                   <div class="org-mini-bar">
-                    <span class="org-mini-bar-fill" style="height: 94%"></span>
-                    <small>Meta</small>
+                    <span class="org-mini-bar-fill" data-org-hero-bar="micro" style="height: 75%"></span>
+                    <small>Comms</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" data-org-hero-bar="mentalidade" style="height: 86%"></span>
+                    <small>Mental</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" data-org-hero-bar="disponibilidade" style="height: 94%"></span>
+                    <small>Presença</small>
                   </div>
                 </div>
               </article>
             </div>
-            <div class="org-dashboard-table-preview" aria-hidden="true">
+            <div class="org-dashboard-table-preview">
               <p class="org-dashboard-analytics-title">Resumo operacional</p>
               <div class="org-dashboard-table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Setor</th>
-                      <th>Status</th>
-                      <th>Atualização</th>
-                      <th>Prioridade</th>
+                      <th>Membro</th>
+                      <th>Semana</th>
+                      <th>Geral</th>
+                      <th>Credencial</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody data-org-hero-table-body>
                     <tr>
-                      <td>Recrutamento</td>
-                      <td>Ativo</td>
-                      <td>Hoje, 14:00</td>
-                      <td>Alta</td>
-                    </tr>
-                    <tr>
-                      <td>Performance</td>
-                      <td>Sincronizado</td>
-                      <td>Hoje, 13:42</td>
-                      <td>Média</td>
-                    </tr>
-                    <tr>
-                      <td>Credenciais</td>
-                      <td>Em ordem</td>
-                      <td>Hoje, 13:20</td>
-                      <td>Alta</td>
+                      <td>Carregando</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
                     </tr>
                   </tbody>
                 </table>
