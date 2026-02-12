@@ -3131,6 +3131,7 @@ function initOrgAccess() {
     }
 
     const canSeeTemporaryPassword = isApprovalRole(currentSession?.role);
+    lastPanelDataSnapshot = body && typeof body === "object" ? body : null;
     const usersList = Array.isArray(body.users) ? body.users : [];
     const meUserNumber = String(body?.me?.userNumber || "");
     memberDirectorySnapshot = [...usersList];
@@ -3263,6 +3264,7 @@ function initOrgAccess() {
     );
 
     refreshMemberProfileSelector();
+    updateDashboardHero();
   }
 
   async function refreshOwnerRequests() {
@@ -3280,6 +3282,11 @@ function initOrgAccess() {
     }
 
     renderOwnerRequests(body.items || []);
+    if (!lastPanelDataSnapshot || typeof lastPanelDataSnapshot !== "object") {
+      lastPanelDataSnapshot = {};
+    }
+    lastPanelDataSnapshot.requests = Array.isArray(body.items) ? body.items : [];
+    updateDashboardHero();
   }
 
   async function refreshMemberStatuses() {
@@ -3298,6 +3305,7 @@ function initOrgAccess() {
 
     memberStatusSnapshot = Array.isArray(body.items) ? body.items : [];
     rerenderMemberStatusesFromSnapshot();
+    updateDashboardHero();
   }
 
   function applySession(session) {
