@@ -5093,6 +5093,7 @@ body.org-dashboard-layout .org-dashboard-card,
 body.org-dashboard-layout .org-dashboard-analytics-card,
 body.org-dashboard-layout .org-dashboard-table-preview,
 body.org-dashboard-layout .org-enterprise-card,
+body.org-dashboard-layout .org-command-card,
 body.org-dashboard-layout .org-panel-section {
   border-color: var(--org-border-soft);
   border-radius: 16px;
