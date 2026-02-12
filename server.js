@@ -2952,54 +2952,67 @@ app.use("/assets", express.static(path.join(APP_DIR, "assets"), {
 }));
 
 app.get(["/", "/index.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "index.html"));
 });
 
 app.get(["/formulario", "/formulario.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "formulario.html"));
 });
 
 app.get(["/login", "/login.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "login.html"));
 });
 
 app.get(["/confirmar-email", "/confirmar-email.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "confirmar-email.html"));
 });
 
 app.get(["/termos", "/termos.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "termos.html"));
 });
 
 app.get(["/politica", "/politica.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "politica.html"));
 });
 
 app.get(["/privacidade", "/privacidade.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "privacidade.html"));
 });
 
 app.get("/favicon.ico", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=2592000, immutable");
   res.sendFile(path.join(APP_DIR, "favicon.ico"));
 });
 
 app.get("/robots.txt", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=3600");
   res.sendFile(path.join(APP_DIR, "robots.txt"));
 });
 
 app.get("/sitemap.xml", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=3600");
   res.sendFile(path.join(APP_DIR, "sitemap.xml"));
 });
 
 app.get("/styles.css", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=86400");
   res.sendFile(path.join(APP_DIR, "styles.css"));
 });
 
 app.get("/script.js", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=86400");
   res.sendFile(path.join(APP_DIR, "script.js"));
 });
 
 app.get("/anti-inspect.js", (_req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=86400");
   res.sendFile(path.join(APP_DIR, "anti-inspect.js"));
 });
 
