@@ -1968,6 +1968,86 @@ function initOrgAccess() {
     });
   }
 
+  function renderCommandTimeline(items) {
+    if (!orgCommandTimeline) {
+      return;
+    }
+    orgCommandTimeline.innerHTML = "";
+    const list = Array.isArray(items) && items.length > 0 ? items : ["Operação estável no momento."];
+    list.slice(0, 5).forEach((message) => {
+      const li = document.createElement("li");
+      li.textContent = String(message);
+      orgCommandTimeline.appendChild(li);
+    });
+  }
+
+  function updateCommandCenterWidgets(metrics) {
+    const readiness = normalizePercentValue(
+      metrics.performancePercent * 0.45 + metrics.emailPercent * 0.3 + metrics.securityPercent * 0.25
+    );
+    const riskLevel = readiness < 55 || metrics.pendingRequests > 3 || metrics.pendingEmail > 5
+      ? "Crítico"
+      : readiness < 72 || metrics.pendingRequests > 0 || metrics.pendingEmail > 0
+        ? "Moderado"
+        : "Baixo";
+    const actionWindow = readiness >= 80 ? "Agressiva" : readiness >= 60 ? "Controlada" : "Recuperação";
+    const topLabel =
+      metrics.leaderRow && metrics.leaderRow.rankScore !== undefined
+        ? `${metrics.leaderRow.fullName || metrics.leaderRow.inGameName || `#${metrics.leaderRow.userNumber}`} (${formatPercentValue(metrics.leaderRow.rankScore)})`
+        : "Sem dados";
+
+    if (orgCommandReadiness) {
+      orgCommandReadiness.textContent = formatPercentValue(readiness);
+    }
+    if (orgCommandRisk) {
+      orgCommandRisk.textContent = riskLevel;
+    }
+    if (orgCommandWindow) {
+      orgCommandWindow.textContent = actionWindow;
+    }
+    if (orgCommandEmailGoal) {
+      orgCommandEmailGoal.textContent = `${formatPercentValue(metrics.emailPercent)} de contas verificadas`;
+    }
+    if (orgCommandApprovalGoal) {
+      orgCommandApprovalGoal.textContent = `${metrics.pendingRequests} pendência(s)`;
+    }
+    if (orgCommandPerformanceGoal) {
+      orgCommandPerformanceGoal.textContent = formatPercentValue(metrics.performancePercent);
+    }
+    if (orgCommandTopPerformer) {
+      orgCommandTopPerformer.textContent = topLabel;
+    }
+    if (orgCommandLastSync) {
+      orgCommandLastSync.textContent = `Atualizado: ${formatDateTime(metrics.lastSync)}`;
+    }
+
+    const timeline = [];
+    if (metrics.pendingRequests > 0) {
+      timeline.push(`Aprovação pendente: ${metrics.pendingRequests} solicitação(ões) aguardando decisão.`);
+    } else {
+      timeline.push("Aprovações em dia: fila de solicitações zerada.");
+    }
+    if (metrics.pendingEmail > 0) {
+      timeline.push(`Confirmação de e-mail pendente para ${metrics.pendingEmail} conta(s).`);
+    } else {
+      timeline.push("Verificação de e-mail concluída para todas as contas ativas.");
+    }
+    timeline.push(`Média de desempenho competitiva em ${formatPercentValue(metrics.performancePercent)}.`);
+    if (metrics.mustChangePassword > 0) {
+      timeline.push(`Segurança: ${metrics.mustChangePassword} conta(s) ainda usam senha provisória.`);
+    } else {
+      timeline.push("Segurança: nenhuma senha provisória pendente.");
+    }
+    if (metrics.leaderRow) {
+      timeline.push(
+        `Top da semana: ${
+          metrics.leaderRow.fullName || metrics.leaderRow.inGameName || `#${metrics.leaderRow.userNumber}`
+        } com ${formatPercentValue(metrics.leaderRow.rankScore)}.`
+      );
+    }
+    renderCommandTimeline(timeline);
+  }
+
   function updateEnterpriseWidgets() {
     const roleValue = String(currentSession?.role || "");
     orgQuickTabButtons.forEach((button) => {
@@ -2033,6 +2113,16 @@ function initOrgAccess() {
         lastPanelDataSnapshot?.me?.updatedAt ||
         new Date().toISOString();
       orgEnterpriseStamp.textContent = `Última sincronização: ${formatDateTime(lastSync)}`;
+      updateCommandCenterWidgets({
+        pendingRequests,
+        pendingEmail,
+        mustChangePassword,
+        performancePercent,
+        emailPercent,
+        securityPercent,
+        leaderRow,
+        lastSync
+      });
     }
 
     renderEnterpriseAlerts({
