@@ -1960,6 +1960,16 @@ function initOrgAccess() {
   }
 
   function updateEnterpriseWidgets() {
+    const roleValue = String(currentSession?.role || "");
+    orgQuickTabButtons.forEach((button) => {
+      const tabKey = String(button.dataset.orgQuickTab || "").trim();
+      const allowed = Boolean(currentSession) && canAccessOrgPanelTab(tabKey, roleValue);
+      button.disabled = !allowed;
+    });
+    orgQuickActionButtons.forEach((button) => {
+      button.disabled = !currentSession;
+    });
+
     const members = getDashboardMemberSource().filter((item) => String(item?.status || "active") === "active");
     const totalMembers = members.length;
     const verifiedMembers = members.filter((item) => item?.emailVerifiedAt).length;
