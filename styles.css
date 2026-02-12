@@ -915,6 +915,16 @@ body.org-dashboard-layout .org-dashboard-top {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .org-mini-bar-fill {
+    transition: none;
+  }
+
+  .org-dashboard-table-wrap tbody.is-refreshing tr.org-dashboard-row-enter {
+    animation: none;
+  }
+}
+
 body.org-dashboard-layout .org-panel-tab-strip {
   display: grid;
   gap: 0.36rem;
