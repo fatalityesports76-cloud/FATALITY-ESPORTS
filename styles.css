@@ -3656,6 +3656,11 @@ body.mobile-performance .reveal.visible {
     padding: 0.38rem 0.26rem;
   }
 
+  .org-panel-tab-btn {
+    font-size: 0.54rem;
+    padding: 0.34rem 0.44rem;
+  }
+
   .org-admin-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
