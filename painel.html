@@ -69,7 +69,6 @@
       >
         Login Org
       </button>
-      <span class="org-role-chip hidden" data-org-chip aria-live="polite"></span>
       <div class="org-access-panel" id="org-access-panel" data-org-panel>
         <p class="org-access-title">Acesso da organização</p>
         <div class="org-mode-switch" role="tablist" aria-label="Modos de acesso da org">
@@ -118,6 +117,10 @@
                   <span class="org-dashboard-status-pill">Sistema online</span>
                   <span class="org-dashboard-status-pill" data-org-hero-pill-week>Sessão segura</span>
                   <span class="org-dashboard-status-pill" data-org-hero-pill-role>Padrão Fatality</span>
+                </div>
+                <div class="org-dashboard-account-row">
+                  <span class="org-role-chip hidden" data-org-chip aria-live="polite"></span>
+                  <button class="btn btn-secondary org-access-logout hidden" type="button" data-org-logout hidden>Sair</button>
                 </div>
               </div>
             </div>
@@ -581,7 +584,6 @@
         </div>
         </div>
         <p class="org-access-state" data-org-state role="status" aria-live="polite">Informe suas credenciais da org.</p>
-        <button class="btn btn-secondary org-access-logout hidden" type="button" data-org-logout hidden>Sair</button>
       </div>
     </div>
   </section>
