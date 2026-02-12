@@ -1943,8 +1943,11 @@ function initOrgAccess() {
     const rows = buildPerformanceRankingRows(boardData).slice(0, 5);
     if (rows.length === 0) {
       const tr = document.createElement("tr");
-      tr.innerHTML =
-        "<td>Sem dados</td><td>-</td><td>-</td><td>-</td>";
+      ["Sem dados", "-", "-", "-"].forEach((value) => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
       orgHeroTableBody.appendChild(tr);
       return;
     }
@@ -1954,7 +1957,11 @@ function initOrgAccess() {
       const identity = row.fullName || row.inGameName || `Player ${row.userNumber}`;
       const week = row.weekPercent === null ? "-" : formatPercentValue(row.weekPercent);
       const overall = formatPercentValue(row.overallPercent);
-      tr.innerHTML = `<td>${identity}</td><td>${week}</td><td>${overall}</td><td>#${row.userNumber}</td>`;
+      [identity, week, overall, `#${row.userNumber}`].forEach((value) => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
       orgHeroTableBody.appendChild(tr);
     });
   }
