@@ -2948,7 +2948,8 @@ app.get("/api/admin/audit", requireAdminSession, (req, res) => {
 app.use("/assets", express.static(path.join(APP_DIR, "assets"), {
   index: false,
   dotfiles: "deny",
-  maxAge: "7d"
+  maxAge: "30d",
+  immutable: true
 }));
 
 app.get(["/", "/index.html"], (_req, res) => {
