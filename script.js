@@ -700,6 +700,11 @@ function initNavigationHighlight() {
     });
   });
 
+  if (shouldUseMobilePerformanceMode) {
+    updateByScroll();
+    return;
+  }
+
   let framePending = false;
 
   function queueUpdate() {
