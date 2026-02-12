@@ -816,6 +816,9 @@ function initOrgAccess() {
     document.querySelectorAll("[data-org-member-edit-cancel]")
   );
   const isOrgPage = orgAccessRoot.hasAttribute("data-org-page");
+  const pathnameLower = String(window.location.pathname || "").toLowerCase();
+  const isOrgLoginPage = pathnameLower.endsWith("/login") || pathnameLower.endsWith("/login.html");
+  const isOrgDashboardPage = pathnameLower.endsWith("/painel") || pathnameLower.endsWith("/painel.html");
 
   if (
     !orgToggle ||
