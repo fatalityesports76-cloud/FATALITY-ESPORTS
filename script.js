@@ -1984,7 +1984,7 @@ function initOrgAccess() {
   }
 
   function updateDashboardHero() {
-    const roleLabel = roleLabelFromValue(currentSession?.role || "");
+    const roleLabel = currentSession?.role ? roleLabelFromValue(currentSession.role) : "";
     const credential = String(currentSession?.userNumber || "").trim();
     const members = getDashboardMemberSource().filter((item) => String(item?.status || "active") === "active");
     const totalMembers = members.length;
