@@ -4683,6 +4683,10 @@ body.mobile-performance .reveal.visible {
     grid-template-columns: 1fr;
   }
 
+  .org-command-grid {
+    grid-template-columns: 1fr;
+  }
+
   .org-enterprise-actions {
     grid-template-columns: 1fr;
   }
