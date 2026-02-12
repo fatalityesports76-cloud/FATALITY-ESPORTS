@@ -861,6 +861,8 @@ body.org-dashboard-layout .org-dashboard-top {
   border-radius: 8px 8px 4px 4px;
   background: linear-gradient(180deg, rgba(252, 201, 255, 0.95), rgba(162, 83, 232, 0.95));
   box-shadow: 0 0 16px rgba(190, 98, 255, 0.28);
+  transition: height 0.52s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: height;
 }
 
 .org-mini-bar small {
@@ -896,6 +898,21 @@ body.org-dashboard-layout .org-dashboard-top {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.58rem;
+}
+
+.org-dashboard-table-wrap tbody.is-refreshing tr.org-dashboard-row-enter {
+  animation: orgDashboardRowIn 0.42s ease both;
+}
+
+@keyframes orgDashboardRowIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body.org-dashboard-layout .org-panel-tab-strip {
