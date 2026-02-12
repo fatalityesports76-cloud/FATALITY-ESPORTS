@@ -101,6 +101,32 @@
             <button class="btn btn-secondary" type="button" data-org-login-verify-back>Voltar</button>
           </div>
         </form>
+        <div class="org-dashboard hidden" data-org-dashboard hidden>
+          <div class="org-panel-tab-strip" data-org-panel-tab-strip role="tablist" aria-label="Abas do painel da organização">
+            <button class="org-panel-tab-btn is-active" type="button" data-org-panel-tab="access">Acesso da organização</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="direct_create">Cadastro direto de membro</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="credential_ops">Gestão de credenciais e senha</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="full_data">Painel completo da organização</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="performance">Desempenho</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="member_profile">Cadastro completo de membro</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="password">Alteração de senha</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="email">Atualização de e-mail da conta</button>
+            <button class="org-panel-tab-btn" type="button" data-org-panel-tab="full_panel">Aprovações e status</button>
+          </div>
+
+          <section class="org-panel-section hidden" data-org-panel-section="access" hidden>
+            <div class="org-owner-tools">
+              <p class="org-owner-title">Acesso da organização</p>
+              <div class="org-session-summary">
+                <p><strong>Credencial:</strong> <span data-org-summary-credential>-</span></p>
+                <p><strong>Cargo:</strong> <span data-org-summary-role>-</span></p>
+                <p><strong>E-mail:</strong> <span data-org-summary-email>-</span></p>
+                <p><strong>Status do e-mail:</strong> <span data-org-summary-email-status>-</span></p>
+                <p><strong>Status da senha:</strong> <span data-org-summary-password-status>-</span></p>
+              </div>
+            </div>
+          </section>
+
         <div class="org-owner-tools hidden" data-org-owner-tools hidden>
           <div class="org-owner-head">
             <p class="org-owner-title">Aprovações pendentes</p>
