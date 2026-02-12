@@ -4426,8 +4426,13 @@ body.mobile-performance .reveal.visible {
 
   body.org-dashboard-layout.org-authenticated .org-access-logout {
     position: static;
-    margin: 0 0.7rem 0.7rem;
-    width: calc(100% - 1.4rem);
+    margin: 0;
+    width: auto;
+  }
+
+  body.org-dashboard-layout.org-authenticated .org-dashboard-account-row {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .org-admin-kpis {
