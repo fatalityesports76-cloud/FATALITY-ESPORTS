@@ -1369,7 +1369,8 @@ body.org-dashboard-layout.org-authenticated .org-dashboard-search input {
 
 body.org-dashboard-layout.org-authenticated .org-dashboard-cards,
 body.org-dashboard-layout.org-authenticated .org-dashboard-analytics,
-body.org-dashboard-layout.org-authenticated .org-dashboard-table-preview {
+body.org-dashboard-layout.org-authenticated .org-dashboard-table-preview,
+body.org-dashboard-layout.org-authenticated .org-enterprise-grid {
   margin: 0 0.9rem;
 }
 
