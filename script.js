@@ -3142,7 +3142,7 @@ function initOrgAccess() {
     }
 
     if (isOrgLoginPage) {
-      window.location.href = "painel.html";
+      window.location.href = "/painel";
       return;
     }
 
@@ -3593,7 +3593,7 @@ function initOrgAccess() {
     resetAllForms();
     applySession(null);
     if (isOrgDashboardPage) {
-      window.location.href = "login.html";
+      window.location.href = "/login";
     }
   });
 
@@ -4368,7 +4368,7 @@ function initOrgAccess() {
         if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
           applySession(null);
           if (isOrgDashboardPage) {
-            window.location.href = "login.html";
+            window.location.href = "/login";
           }
         }
         return;
@@ -4381,7 +4381,7 @@ function initOrgAccess() {
       if (clearOnFailure && !currentSession && !orgAuthInFlight && restoreVersion === orgSessionVersion) {
         applySession(null);
         if (isOrgDashboardPage) {
-          window.location.href = "login.html";
+          window.location.href = "/login";
         }
       }
     }
@@ -4517,7 +4517,7 @@ function initOrgEmailVerificationPage() {
         "#9ff7d8"
       );
       window.setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.href = "/login";
       }, 1300);
     } catch (error) {
       console.error(error);
