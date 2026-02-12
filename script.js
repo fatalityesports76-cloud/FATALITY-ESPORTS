@@ -1875,6 +1875,156 @@ function initOrgAccess() {
     };
   }
 
+  function setEnterpriseProgressLevel(element, percent) {
+    if (!element) {
+      return;
+    }
+    const level = Math.max(0, Math.min(10, Math.round(normalizePercentValue(percent) / 10)));
+    const previousLevel = String(element.dataset.enterpriseProgLevel || "");
+    if (previousLevel) {
+      element.classList.remove(`prog-${previousLevel}`);
+    }
+    element.classList.add(`prog-${level}`);
+    element.dataset.enterpriseProgLevel = String(level);
+  }
+
+  function setEnterpriseRadarMetric(key, percent) {
+    const bar = orgEnterpriseRadarBars.find((item) => String(item.dataset.orgEnterpriseRadar || "") === key);
+    const valueNode = orgEnterpriseRadarValues.find(
+      (item) => String(item.dataset.orgEnterpriseRadarValue || "") === key
+    );
+    const normalized = normalizePercentValue(percent);
+    setEnterpriseProgressLevel(bar, normalized);
+    if (valueNode) {
+      valueNode.textContent = formatPercentValue(normalized);
+    }
+  }
+
+  function renderEnterpriseAlerts(metrics) {
+    if (!orgEnterpriseAlerts) {
+      return;
+    }
+
+    orgEnterpriseAlerts.innerHTML = "";
+    const alerts = [];
+    if (metrics.pendingRequests > 0) {
+      alerts.push({
+        level: "critical",
+        title: "Aprovações pendentes",
+        detail: `${metrics.pendingRequests} solicitação(ões) aguardando decisão da liderança.`
+      });
+    }
+    if (metrics.pendingEmail > 0) {
+      alerts.push({
+        level: "warning",
+        title: "E-mails não verificados",
+        detail: `${metrics.pendingEmail} conta(s) ainda não concluíram a confirmação de e-mail.`
+      });
+    }
+    if (metrics.mustChangePassword > 0) {
+      alerts.push({
+        level: "warning",
+        title: "Troca de senha recomendada",
+        detail: `${metrics.mustChangePassword} membro(s) ainda usam senha provisória.`
+      });
+    }
+    if (metrics.performancePercent < 65 && metrics.totalMembers > 0) {
+      alerts.push({
+        level: "info",
+        title: "Performance abaixo da meta",
+        detail: `Média competitiva em ${formatPercentValue(metrics.performancePercent)}.`
+      });
+    }
+    if (alerts.length === 0) {
+      alerts.push({
+        level: "success",
+        title: "Operação estável",
+        detail: "Nenhum alerta crítico no momento."
+      });
+    }
+
+    alerts.slice(0, 5).forEach((alert) => {
+      const item = document.createElement("li");
+      item.className = `org-enterprise-alert is-${alert.level}`;
+
+      const title = document.createElement("strong");
+      title.textContent = alert.title;
+
+      const detail = document.createElement("span");
+      detail.textContent = alert.detail;
+
+      item.appendChild(title);
+      item.appendChild(detail);
+      orgEnterpriseAlerts.appendChild(item);
+    });
+  }
+
+  function updateEnterpriseWidgets() {
+    const members = getDashboardMemberSource().filter((item) => String(item?.status || "active") === "active");
+    const totalMembers = members.length;
+    const verifiedMembers = members.filter((item) => item?.emailVerifiedAt).length;
+    const pendingEmail = Math.max(0, totalMembers - verifiedMembers);
+    const pendingRequests = Array.isArray(lastPanelDataSnapshot?.requests)
+      ? lastPanelDataSnapshot.requests.filter((item) => String(item?.status || "").toLowerCase() === "pending")
+          .length
+      : 0;
+    const mustChangePassword = members.filter((item) => item?.mustChangePassword).length;
+    const leadership = members.filter((item) => {
+      const role = String(item?.role || "");
+      return role === "dono" || role === "lider" || role === "vice_lider" || role === "adm";
+    }).length;
+
+    const performancePercent = computeDashboardPerformancePercent();
+    const recruitmentPercent = normalizePercentValue(100 - pendingRequests * 16);
+    const emailPercent = totalMembers > 0 ? (verifiedMembers / totalMembers) * 100 : 0;
+    const securityPercent = normalizePercentValue(100 - pendingEmail * 9 - mustChangePassword * 7);
+
+    setEnterpriseRadarMetric("recruitment", recruitmentPercent);
+    setEnterpriseRadarMetric("email", emailPercent);
+    setEnterpriseRadarMetric("performance", performancePercent);
+    setEnterpriseRadarMetric("security", securityPercent);
+
+    if (orgEnterpriseLeadership) {
+      orgEnterpriseLeadership.textContent = String(leadership);
+    }
+    if (orgEnterprisePasswordReset) {
+      orgEnterprisePasswordReset.textContent = String(mustChangePassword);
+    }
+    if (orgEnterprisePendingRequests) {
+      orgEnterprisePendingRequests.textContent = String(pendingRequests);
+    }
+    if (orgEnterprisePendingEmails) {
+      orgEnterprisePendingEmails.textContent = String(pendingEmail);
+    }
+
+    const rows = buildPerformanceRankingRows(performanceBoardSnapshot);
+    const leaderRow = rows[0] || null;
+    if (orgEnterpriseTopPlayer) {
+      orgEnterpriseTopPlayer.textContent = leaderRow
+        ? leaderRow.fullName || leaderRow.inGameName || `Credencial #${leaderRow.userNumber}`
+        : "-";
+    }
+    if (orgEnterpriseTopScore) {
+      orgEnterpriseTopScore.textContent = leaderRow ? formatPercentValue(leaderRow.rankScore) : "-";
+    }
+
+    if (orgEnterpriseStamp) {
+      const lastSync =
+        lastPerformanceSummarySnapshot?.lastUpdatedAt ||
+        lastPanelDataSnapshot?.me?.updatedAt ||
+        new Date().toISOString();
+      orgEnterpriseStamp.textContent = `Última sincronização: ${formatDateTime(lastSync)}`;
+    }
+
+    renderEnterpriseAlerts({
+      pendingRequests,
+      pendingEmail,
+      mustChangePassword,
+      performancePercent,
+      totalMembers
+    });
+  }
+
   function stopDashboardHeroTrendAnimation() {
     if (!dashboardHeroTrendAnimationFrame) {
       return;
