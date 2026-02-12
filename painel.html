@@ -103,32 +103,48 @@
         <div class="org-dashboard hidden" data-org-dashboard hidden>
           <div class="org-dashboard-top">
             <div class="org-dashboard-topbar">
-              <p class="org-dashboard-title">Painel Principal</p>
-              <label class="org-dashboard-search">
-                <span>Buscar no painel</span>
-                <input type="search" placeholder="Buscar membro, credencial ou e-mail">
-              </label>
+              <div class="org-dashboard-top-left">
+                <p class="org-dashboard-title">Painel Principal</p>
+                <p class="org-dashboard-subtitle">Central operacional da organização Fatality E-Sports</p>
+              </div>
+              <div class="org-dashboard-top-right">
+                <label class="org-dashboard-search">
+                  <span>Buscar no painel</span>
+                  <input type="search" placeholder="Buscar membro, credencial ou e-mail">
+                </label>
+                <div class="org-dashboard-status-row" aria-hidden="true">
+                  <span class="org-dashboard-status-pill">Sistema online</span>
+                  <span class="org-dashboard-status-pill">Sessão segura</span>
+                  <span class="org-dashboard-status-pill">Padrão Fatality</span>
+                </div>
+              </div>
             </div>
             <div class="org-dashboard-cards" aria-hidden="true">
               <article class="org-dashboard-card">
-                <p class="org-dashboard-card-value">Tempo real</p>
+                <p class="org-dashboard-card-value">24/7</p>
                 <p class="org-dashboard-card-label">Sincronização ativa da operação</p>
               </article>
               <article class="org-dashboard-card">
-                <p class="org-dashboard-card-value">Padrão Fatality</p>
+                <p class="org-dashboard-card-value">+100%</p>
                 <p class="org-dashboard-card-label">Disciplina, processo e performance</p>
               </article>
               <article class="org-dashboard-card">
-                <p class="org-dashboard-card-value">Elite roxa</p>
-                <p class="org-dashboard-card-label">Controle total da organização</p>
+                <p class="org-dashboard-card-value">Comando total</p>
+                <p class="org-dashboard-card-label">Controle completo da organização</p>
               </article>
             </div>
           </div>
           <div class="org-panel-tab-strip" data-org-panel-tab-strip role="tablist" aria-label="Abas do painel da organização">
+            <div class="org-panel-nav-head" aria-hidden="true">
+              <p class="org-panel-nav-kicker">Fatality Control</p>
+              <p class="org-panel-nav-title">Navegação</p>
+            </div>
+            <p class="org-panel-nav-group" aria-hidden="true">Core</p>
             <button class="org-panel-tab-btn is-active" type="button" data-org-panel-tab="access">
               <span class="org-panel-tab-icon" aria-hidden="true">AC</span>
               <span class="org-panel-tab-label">Acesso da organização</span>
             </button>
+            <p class="org-panel-nav-group" aria-hidden="true">Gestão</p>
             <button class="org-panel-tab-btn" type="button" data-org-panel-tab="direct_create">
               <span class="org-panel-tab-icon" aria-hidden="true">CD</span>
               <span class="org-panel-tab-label">Cadastro direto de membro</span>
