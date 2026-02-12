@@ -3932,9 +3932,18 @@ body.mobile-performance .reveal.visible {
     align-items: flex-start;
   }
 
+  body.org-dashboard-layout .org-dashboard-top-right {
+    min-width: 0;
+    width: 100%;
+  }
+
   body.org-dashboard-layout .org-dashboard-search {
     width: 100%;
     min-width: 0;
+  }
+
+  body.org-dashboard-layout .org-dashboard-status-row {
+    width: 100%;
   }
 
   body.org-dashboard-layout .org-dashboard-cards {
