@@ -893,6 +893,7 @@ function initOrgAccess() {
   let memberStatusSnapshot = [];
   let memberDirectorySnapshot = [];
   let activeOrgPanelTab = "access";
+  const orgPanelTabStoragePrefix = "fatality_org_panel_tab_v1";
 
   function isApprovalRole(role) {
     return approvalRoles.has(String(role || ""));
@@ -991,6 +992,38 @@ function initOrgAccess() {
     return true;
   }
 
+  function getOrgPanelStorageKey(session) {
+    const userNumber = String(session?.userNumber || "").trim();
+    if (!userNumber) {
+      return "";
+    }
+    return `${orgPanelTabStoragePrefix}:${userNumber}`;
+  }
+
+  function saveOrgPanelTab(tabKey, session) {
+    const storageKey = getOrgPanelStorageKey(session);
+    if (!storageKey) {
+      return;
+    }
+    try {
+      window.localStorage?.setItem(storageKey, String(tabKey || "access"));
+    } catch (_error) {
+      // noop
+    }
+  }
+
+  function loadSavedOrgPanelTab(session) {
+    const storageKey = getOrgPanelStorageKey(session);
+    if (!storageKey) {
+      return "";
+    }
+    try {
+      return String(window.localStorage?.getItem(storageKey) || "").trim();
+    } catch (_error) {
+      return "";
+    }
+  }
+
   function setOrgPanelTab(tabKey, session = currentSession) {
     const roleValue = String(session?.role || "");
     const normalizedTab = String(tabKey || "access");
@@ -1004,6 +1037,9 @@ function initOrgAccess() {
       : String(firstAllowed?.dataset.orgPanelTab || "access");
 
     activeOrgPanelTab = finalTab;
+    if (session) {
+      saveOrgPanelTab(finalTab, session);
+    }
 
     orgPanelTabButtons.forEach((button) => {
       const key = String(button.dataset.orgPanelTab || "");
@@ -3175,6 +3211,10 @@ function initOrgAccess() {
       const canAssume = isFullManagementRole(session.role);
       orgOwnerAssume.classList.toggle("hidden", !canAssume);
       orgOwnerAssume.hidden = !canAssume;
+    }
+    const savedTab = loadSavedOrgPanelTab(session);
+    if (savedTab) {
+      activeOrgPanelTab = savedTab;
     }
     setOrgPanelTab(activeOrgPanelTab || "access", session);
     syncDirectCreateRoleOptions();
