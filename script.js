@@ -34,28 +34,35 @@ const shouldUseMobilePerformanceMode =
   isNarrowViewport ||
   hasLowCpuBudget ||
   hasLowMemoryBudget ||
-  prefersReducedData;
+  prefersReducedData ||
+  prefersReducedMotion;
 
 if (shouldUseMobilePerformanceMode) {
   document.documentElement.classList.add("mobile-performance");
   document.body?.classList.add("mobile-performance");
 }
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        return;
-      }
+if (revealItems.length) {
+  if (typeof window.IntersectionObserver === "function") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
 
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    });
-  },
-  { threshold: 0.16 }
-);
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.16 }
+    );
 
-revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => observer.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("visible"));
+  }
+}
 
 if (logo && logoHint) {
   logo.addEventListener("error", () => {
