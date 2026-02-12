@@ -2713,6 +2713,103 @@ function initOrgAccess() {
     });
   }
 
+  function buildMemberProfileFields(item, canSeeTemporaryPassword) {
+    const fields = [
+      ["Credencial", item.credentialNumber || item.userNumber || "-"],
+      ["Nome", item.fullName || "-"],
+      ["Usuario", item.username || "-"],
+      ["Cargo", roleLabelFromValue(item.role)],
+      ["E-mail", item.email || "-"],
+      ["E-mail verificado", item.emailVerifiedAt ? formatDateTime(item.emailVerifiedAt) : "Pendente"],
+      ["Nome no jogo", item.inGameName || "-"],
+      ["ID no jogo", item.gameId || "-"],
+      ["ID do servidor", item.serverId || "-"],
+      ["WhatsApp", item.whatsapp || "-"],
+      ["Identificação", identificationLabelFromValue(item.identificacaoGenero)],
+      ["Observação", item.note || "-"],
+      ["Status", item.status || "active"],
+      ["Troca de senha pendente", item.mustChangePassword ? "Sim" : "Não"],
+      ["Aprovado em", formatDateTime(item.approvedAt)],
+      ["Aprovado por", item.approvedBy || "-"],
+      ["Criado em", formatDateTime(item.createdAt)],
+      ["Atualizado em", formatDateTime(item.updatedAt)]
+    ];
+    if (canSeeTemporaryPassword) {
+      fields.splice(
+        13,
+        0,
+        ["Senha provisória atual", item.temporaryPassword || "-"],
+        ["Senha provisória atualizada em", formatDateTime(item.temporaryPasswordUpdatedAt)]
+      );
+    }
+    return fields;
+  }
+
+  function renderSelectedMemberProfile(userNumberValue) {
+    if (!orgMemberProfileView) {
+      return;
+    }
+
+    const selected = memberDirectorySnapshot.find(
+      (item) => String(item.userNumber || "") === String(userNumberValue || "")
+    );
+
+    if (!selected) {
+      renderMemberDataList(
+        orgMemberProfileView,
+        [],
+        () => [],
+        "Selecione um membro para visualizar o cadastro completo."
+      );
+      return;
+    }
+
+    const canSeeTemporaryPassword = isApprovalRole(currentSession?.role);
+    renderMemberDataList(
+      orgMemberProfileView,
+      [selected],
+      (item) => buildMemberProfileFields(item, canSeeTemporaryPassword),
+      "Cadastro não encontrado."
+    );
+  }
+
+  function refreshMemberProfileSelector() {
+    if (!orgMemberProfileSelect) {
+      return;
+    }
+
+    orgMemberProfileSelect.innerHTML = "";
+
+    if (!Array.isArray(memberDirectorySnapshot) || memberDirectorySnapshot.length === 0) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = "Nenhum membro disponível";
+      orgMemberProfileSelect.appendChild(option);
+      orgMemberProfileSelect.disabled = true;
+      renderSelectedMemberProfile("");
+      return;
+    }
+
+    orgMemberProfileSelect.disabled = false;
+    const list = [...memberDirectorySnapshot].sort((left, right) => {
+      return String(left.fullName || "").localeCompare(String(right.fullName || ""), "pt-BR");
+    });
+
+    list.forEach((item) => {
+      const option = document.createElement("option");
+      option.value = String(item.userNumber || "");
+      const credential = String(item.credentialNumber || item.userNumber || "-");
+      option.textContent = `${item.fullName || "Sem nome"} (#${credential})`;
+      orgMemberProfileSelect.appendChild(option);
+    });
+
+    const preferredUser =
+      String(currentSession?.userNumber || "").trim() ||
+      String(list[0]?.userNumber || "").trim();
+    orgMemberProfileSelect.value = preferredUser;
+    renderSelectedMemberProfile(preferredUser);
+  }
+
   async function refreshMemberDataPanel() {
     if (!currentSession || !orgMemberData) {
       return;
