@@ -918,8 +918,15 @@ function initOrgAccess() {
   let memberDirectorySnapshot = [];
   let lastPanelDataSnapshot = null;
   let lastPerformanceSummarySnapshot = null;
+  let dashboardHeroTrendPoints = null;
+  let dashboardHeroTrendSignature = "";
+  let dashboardHeroTrendAnimationFrame = null;
+  let dashboardHeroTableSignature = "";
   let activeOrgPanelTab = "access";
   const orgPanelTabStoragePrefix = "fatality_org_panel_tab_v1";
+  const prefersReducedMotion = Boolean(
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 
   function isApprovalRole(role) {
     return approvalRoles.has(String(role || ""));
