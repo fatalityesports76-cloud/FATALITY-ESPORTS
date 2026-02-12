@@ -5325,3 +5325,160 @@ body.org-dashboard-layout.org-authenticated .org-panel-section::before {
     display: none;
   }
 }
+
+/* Mobile refinements: home logo + org panel */
+@media (max-width: 700px) {
+  /* Home page: highlight logo and center branding only on landing page */
+  body.landing-toxic:not(.org-dashboard-layout) .brand-strip {
+    align-items: center;
+    gap: 0.62rem;
+    padding: 0.76rem 0.72rem;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .brand-left {
+    width: 100%;
+    justify-content: center;
+    gap: 0.54rem;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .corner-logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .brand-title {
+    text-align: center;
+    font-size: clamp(0.94rem, 4.5vw, 1.1rem);
+    letter-spacing: 0.1em;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .brand-right {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.58rem;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .brand-nav {
+    width: 100%;
+    justify-content: center;
+    row-gap: 0.42rem;
+    column-gap: 0.58rem;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .org-access {
+    width: auto;
+    justify-content: center;
+  }
+
+  body.landing-toxic:not(.org-dashboard-layout) .org-access-toggle {
+    width: auto;
+    min-width: 132px;
+  }
+
+  /* Org panel page: cleaner mobile header and dashboard spacing */
+  body.org-dashboard-layout .brand-strip {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.58rem 0.62rem;
+    border-radius: 14px;
+  }
+
+  body.org-dashboard-layout .brand-left {
+    min-width: 0;
+    gap: 0.46rem;
+  }
+
+  body.org-dashboard-layout .brand-title {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+  }
+
+  body.org-dashboard-layout .brand-right {
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.34rem;
+  }
+
+  body.org-dashboard-layout .brand-nav {
+    display: none;
+  }
+
+  body.org-dashboard-layout .org-access {
+    width: auto;
+    gap: 0;
+  }
+
+  body.org-dashboard-layout .org-access-toggle {
+    width: auto;
+    min-width: 114px;
+    padding: 0.38rem 0.58rem;
+    font-size: 0.62rem;
+  }
+
+  body.org-dashboard-layout .org-dashboard-top,
+  body.org-dashboard-layout .org-panel-section {
+    margin: 0 0.52rem 0.6rem;
+    padding: 0.5rem;
+  }
+
+  body.org-dashboard-layout .org-dashboard-topbar {
+    padding: 0.54rem;
+    border-radius: 12px;
+  }
+
+  body.org-dashboard-layout .org-dashboard-status-row {
+    gap: 0.24rem;
+  }
+
+  body.org-dashboard-layout .org-dashboard-status-pill {
+    font-size: 0.5rem;
+    padding: 0.18rem 0.36rem;
+  }
+
+  body.org-dashboard-layout .org-dashboard-account-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
+    margin: 0 0.52rem 0.52rem;
+    padding: 0.46rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.34rem;
+    overflow: visible;
+  }
+
+  body.org-dashboard-layout.org-authenticated .org-panel-tab-btn {
+    width: 100%;
+    min-height: 2rem;
+    justify-content: flex-start;
+    font-size: 0.56rem;
+    padding: 0.42rem 0.44rem;
+  }
+
+  body.org-dashboard-layout.org-authenticated .org-panel-tab-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 460px) {
+  body.org-dashboard-layout .corner-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  body.org-dashboard-layout .brand-title {
+    font-size: 0.74rem;
+  }
+
+  body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
+    grid-template-columns: 1fr;
+  }
+}
