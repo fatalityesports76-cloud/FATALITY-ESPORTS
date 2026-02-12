@@ -3449,12 +3449,16 @@ function initOrgAccess() {
 
     if (!session) {
       closePerformanceEventSource();
+      stopDashboardHeroTrendAnimation();
       performanceSelectedPlayer = "";
       performanceBoardMode = "";
       performanceCurrentWeek = "";
       performanceBoardSnapshot = null;
       lastPerformanceSummarySnapshot = null;
       lastPanelDataSnapshot = null;
+      dashboardHeroTrendPoints = null;
+      dashboardHeroTrendSignature = "";
+      dashboardHeroTableSignature = "";
       memberDirectorySnapshot = [];
       orgToggle.textContent = "Login Org";
       orgToggle.classList.remove("is-authenticated");
