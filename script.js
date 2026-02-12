@@ -734,6 +734,9 @@ function initOrgAccess() {
   const orgModeSwitch = orgAccessRoot.querySelector(".org-mode-switch");
   const orgModeButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-mode-btn]"));
   const orgModePanels = Array.from(orgAccessRoot.querySelectorAll("[data-org-mode-panel]"));
+  const orgDashboard = orgAccessRoot.querySelector("[data-org-dashboard]");
+  const orgPanelTabButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-panel-tab]"));
+  const orgPanelSections = Array.from(orgAccessRoot.querySelectorAll("[data-org-panel-section]"));
   const orgLoginForm = orgAccessRoot.querySelector("[data-org-login-form]");
   const orgLoginVerifyForm = orgAccessRoot.querySelector("[data-org-login-verify-form]");
   const orgLoginVerificationIdInput = orgAccessRoot.querySelector("[data-org-login-verification-id]");
@@ -799,6 +802,13 @@ function initOrgAccess() {
     "[data-org-email-change-verification-id]"
   );
   const orgEmailChangeCancel = orgAccessRoot.querySelector("[data-org-email-change-cancel]");
+  const orgSummaryCredential = orgAccessRoot.querySelector("[data-org-summary-credential]");
+  const orgSummaryRole = orgAccessRoot.querySelector("[data-org-summary-role]");
+  const orgSummaryEmail = orgAccessRoot.querySelector("[data-org-summary-email]");
+  const orgSummaryEmailStatus = orgAccessRoot.querySelector("[data-org-summary-email-status]");
+  const orgSummaryPasswordStatus = orgAccessRoot.querySelector("[data-org-summary-password-status]");
+  const orgMemberProfileSelect = orgAccessRoot.querySelector("[data-org-member-profile-select]");
+  const orgMemberProfileView = orgAccessRoot.querySelector("[data-org-member-profile-view]");
   const orgMemberEditModal = document.querySelector("[data-org-member-edit-modal]");
   const orgMemberEditForm = document.querySelector("[data-org-member-edit-form]");
   const orgMemberEditLead = document.querySelector("[data-org-member-edit-lead]");
