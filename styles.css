@@ -1183,6 +1183,10 @@ body.org-dashboard-layout .org-dashboard-top {
     transition: none;
   }
 
+  .org-enterprise-progress-fill {
+    transition: none;
+  }
+
   .org-dashboard-table-wrap tbody.is-refreshing tr.org-dashboard-row-enter {
     animation: none;
   }
