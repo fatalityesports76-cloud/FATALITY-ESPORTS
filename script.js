@@ -3450,6 +3450,9 @@ function initOrgAccess() {
 
   function applySession(session) {
     roleClassList.forEach((roleClass) => orgState.classList.remove(roleClass));
+    if (document.body && document.body.classList.contains("org-dashboard-layout")) {
+      document.body.classList.toggle("org-authenticated", Boolean(session));
+    }
 
     if (!session) {
       closePerformanceEventSource();
