@@ -820,6 +820,7 @@ function initOrgAccess() {
   if (
     !orgToggle ||
     !orgPanel ||
+    !orgDashboard ||
     !orgState ||
     !orgLogout ||
     !orgLoginForm ||
