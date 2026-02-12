@@ -43,7 +43,9 @@ if (shouldUseMobilePerformanceMode) {
 }
 
 if (revealItems.length) {
-  if (typeof window.IntersectionObserver === "function") {
+  if (shouldUseMobilePerformanceMode) {
+    revealItems.forEach((item) => item.classList.add("visible"));
+  } else if (typeof window.IntersectionObserver === "function") {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
