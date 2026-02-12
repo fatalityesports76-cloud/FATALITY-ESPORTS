@@ -120,18 +120,114 @@
               </div>
             </div>
             <div class="org-dashboard-cards" aria-hidden="true">
-              <article class="org-dashboard-card">
+              <article class="org-dashboard-card is-metric-violet">
                 <p class="org-dashboard-card-value">24/7</p>
                 <p class="org-dashboard-card-label">Sincronização ativa da operação</p>
               </article>
-              <article class="org-dashboard-card">
+              <article class="org-dashboard-card is-metric-pink">
                 <p class="org-dashboard-card-value">+100%</p>
                 <p class="org-dashboard-card-label">Disciplina, processo e performance</p>
               </article>
-              <article class="org-dashboard-card">
+              <article class="org-dashboard-card is-metric-blue">
                 <p class="org-dashboard-card-value">Comando total</p>
                 <p class="org-dashboard-card-label">Controle completo da organização</p>
               </article>
+              <article class="org-dashboard-card is-metric-danger">
+                <p class="org-dashboard-card-value">Zero falhas</p>
+                <p class="org-dashboard-card-label">Execução tática em padrão competitivo</p>
+              </article>
+            </div>
+            <div class="org-dashboard-analytics" aria-hidden="true">
+              <article class="org-dashboard-analytics-card">
+                <p class="org-dashboard-analytics-title">Evolução semanal</p>
+                <svg class="org-dashboard-line-chart" viewBox="0 0 420 170" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="fatalityLineFill" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(222,142,255,0.50)"></stop>
+                      <stop offset="100%" stop-color="rgba(222,142,255,0.05)"></stop>
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="420" height="170" fill="transparent"></rect>
+                  <polyline
+                    class="org-dashboard-line-grid"
+                    points="8,24 412,24 412,150 8,150 8,24"
+                    fill="none"
+                  ></polyline>
+                  <path
+                    class="org-dashboard-line-area"
+                    d="M18 142 L52 98 L84 106 L118 74 L150 78 L184 56 L218 64 L252 46 L286 54 L318 36 L350 42 L384 24 L384 142 L18 142 Z"
+                  ></path>
+                  <polyline
+                    class="org-dashboard-line-path"
+                    points="18,142 52,98 84,106 118,74 150,78 184,56 218,64 252,46 286,54 318,36 350,42 384,24"
+                    fill="none"
+                  ></polyline>
+                </svg>
+              </article>
+              <article class="org-dashboard-analytics-card">
+                <p class="org-dashboard-analytics-title">Distribuição de foco</p>
+                <div class="org-mini-bars">
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 40%"></span>
+                    <small>Macro</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 52%"></span>
+                    <small>Micro</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 64%"></span>
+                    <small>Draft</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 75%"></span>
+                    <small>Comms</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 86%"></span>
+                    <small>Treino</small>
+                  </div>
+                  <div class="org-mini-bar">
+                    <span class="org-mini-bar-fill" style="height: 94%"></span>
+                    <small>Meta</small>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <div class="org-dashboard-table-preview" aria-hidden="true">
+              <p class="org-dashboard-analytics-title">Resumo operacional</p>
+              <div class="org-dashboard-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Setor</th>
+                      <th>Status</th>
+                      <th>Atualização</th>
+                      <th>Prioridade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Recrutamento</td>
+                      <td>Ativo</td>
+                      <td>Hoje, 14:00</td>
+                      <td>Alta</td>
+                    </tr>
+                    <tr>
+                      <td>Performance</td>
+                      <td>Sincronizado</td>
+                      <td>Hoje, 13:42</td>
+                      <td>Média</td>
+                    </tr>
+                    <tr>
+                      <td>Credenciais</td>
+                      <td>Em ordem</td>
+                      <td>Hoje, 13:20</td>
+                      <td>Alta</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="org-panel-tab-strip" data-org-panel-tab-strip role="tablist" aria-label="Abas do painel da organização">
