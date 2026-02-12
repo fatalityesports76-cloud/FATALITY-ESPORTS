@@ -5264,13 +5264,15 @@ body.org-dashboard-layout.org-authenticated .org-panel-section::before {
 @media (hover: hover) and (pointer: fine) {
   body.org-dashboard-layout .org-dashboard-card,
   body.org-dashboard-layout .org-dashboard-analytics-card,
-  body.org-dashboard-layout .org-enterprise-card {
+  body.org-dashboard-layout .org-enterprise-card,
+  body.org-dashboard-layout .org-command-card {
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
 
   body.org-dashboard-layout .org-dashboard-card:hover,
   body.org-dashboard-layout .org-dashboard-analytics-card:hover,
-  body.org-dashboard-layout .org-enterprise-card:hover {
+  body.org-dashboard-layout .org-enterprise-card:hover,
+  body.org-dashboard-layout .org-command-card:hover {
     transform: translateY(-3px);
     border-color: rgba(247, 198, 255, 0.52);
     box-shadow:
