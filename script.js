@@ -4039,6 +4039,16 @@ function initOrgAccess() {
   if (orgMemberSearchInput) {
     orgMemberSearchInput.addEventListener("input", () => {
       rerenderMemberStatusesFromSnapshot();
+      if (orgDashboardSearchInput && orgDashboardSearchInput.value !== orgMemberSearchInput.value) {
+        orgDashboardSearchInput.value = orgMemberSearchInput.value;
+      }
+    });
+  }
+
+  if (orgDashboardSearchInput && orgMemberSearchInput) {
+    orgDashboardSearchInput.addEventListener("input", () => {
+      orgMemberSearchInput.value = orgDashboardSearchInput.value;
+      rerenderMemberStatusesFromSnapshot();
     });
   }
 
