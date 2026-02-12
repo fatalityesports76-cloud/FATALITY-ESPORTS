@@ -3840,6 +3840,13 @@ function initOrgAccess() {
     });
   }
 
+  if (orgMemberProfileSelect) {
+    orgMemberProfileSelect.addEventListener("change", () => {
+      const selectedUserNumber = String(orgMemberProfileSelect.value || "").trim();
+      renderSelectedMemberProfile(selectedUserNumber);
+    });
+  }
+
   if (orgPerformanceForm) {
     orgPerformanceForm.addEventListener("submit", async (event) => {
       event.preventDefault();
