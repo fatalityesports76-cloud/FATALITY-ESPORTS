@@ -1056,6 +1056,20 @@ function initOrgAccess() {
       section.classList.toggle("hidden", !visible);
       section.hidden = !visible;
     });
+
+    const syncContainerVisibility = (container) => {
+      if (!container) {
+        return;
+      }
+      const hasVisibleSection = Array.from(container.querySelectorAll("[data-org-panel-section]")).some(
+        (section) => !section.hidden && !section.classList.contains("hidden")
+      );
+      container.classList.toggle("hidden", !hasVisibleSection);
+      container.hidden = !hasVisibleSection;
+    };
+
+    syncContainerVisibility(orgOwnerTools);
+    syncContainerVisibility(orgMemberData);
   }
 
   function resetOrgPanelTabs() {
