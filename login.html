@@ -128,6 +128,7 @@
           </section>
 
         <div class="org-owner-tools hidden" data-org-owner-tools hidden>
+          <div class="org-panel-section hidden" data-org-panel-section="full_panel" hidden>
           <div class="org-owner-head">
             <p class="org-owner-title">Aprovações pendentes</p>
             <button class="btn btn-secondary org-owner-refresh" type="button" data-org-owner-refresh>Atualizar</button>
@@ -185,6 +186,8 @@
               <button class="btn btn-secondary" type="button" data-org-member-clear-filters>Limpar filtros</button>
             </div>
           </div>
+          </div>
+          <div class="org-panel-section hidden" data-org-panel-section="direct_create" hidden>
           <div class="org-owner-head">
             <p class="org-owner-title">Cadastro direto de membro</p>
           </div>
@@ -249,7 +252,8 @@
             </label>
             <button class="btn btn-primary org-access-submit" type="submit">Cadastrar membro e gerar credencial</button>
           </form>
-          <div class="org-owner-ops hidden" data-org-advanced-ops hidden>
+          </div>
+          <div class="org-owner-ops hidden org-panel-section" data-org-advanced-ops data-org-panel-section="credential_ops" hidden>
             <p class="org-owner-title">Gestão de credenciais e senha</p>
             <label>
               Credencial alvo
