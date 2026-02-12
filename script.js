@@ -2107,23 +2107,24 @@ function initOrgAccess() {
       orgEnterpriseTopScore.textContent = leaderRow ? formatPercentValue(leaderRow.rankScore) : "-";
     }
 
+    const lastSync =
+      lastPerformanceSummarySnapshot?.lastUpdatedAt ||
+      lastPanelDataSnapshot?.me?.updatedAt ||
+      new Date().toISOString();
+
     if (orgEnterpriseStamp) {
-      const lastSync =
-        lastPerformanceSummarySnapshot?.lastUpdatedAt ||
-        lastPanelDataSnapshot?.me?.updatedAt ||
-        new Date().toISOString();
       orgEnterpriseStamp.textContent = `Última sincronização: ${formatDateTime(lastSync)}`;
-      updateCommandCenterWidgets({
-        pendingRequests,
-        pendingEmail,
-        mustChangePassword,
-        performancePercent,
-        emailPercent,
-        securityPercent,
-        leaderRow,
-        lastSync
-      });
     }
+    updateCommandCenterWidgets({
+      pendingRequests,
+      pendingEmail,
+      mustChangePassword,
+      performancePercent,
+      emailPercent,
+      securityPercent,
+      leaderRow,
+      lastSync
+    });
 
     renderEnterpriseAlerts({
       pendingRequests,
