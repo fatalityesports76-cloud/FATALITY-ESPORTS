@@ -891,6 +891,8 @@ function initOrgAccess() {
   let orgAuthInFlight = false;
   let orgSessionVersion = 0;
   let memberStatusSnapshot = [];
+  let memberDirectorySnapshot = [];
+  let activeOrgPanelTab = "access";
 
   function isApprovalRole(role) {
     return approvalRoles.has(String(role || ""));
