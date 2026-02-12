@@ -1073,6 +1073,99 @@ body.org-dashboard-layout .org-password-change {
   background: transparent;
 }
 
+/* Full-page dashboard mode (after org login) */
+body.org-dashboard-layout.org-authenticated > .section:nth-of-type(1),
+body.org-dashboard-layout.org-authenticated > .section:nth-of-type(2) {
+  display: none;
+}
+
+body.org-dashboard-layout.org-authenticated > .section:nth-of-type(3) {
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
+}
+
+body.org-dashboard-layout.org-authenticated .org-access.org-access-page,
+body.org-dashboard-layout.org-authenticated .org-access[data-org-page] {
+  width: 100%;
+  margin: 0;
+}
+
+body.org-dashboard-layout.org-authenticated .org-access-panel {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard {
+  margin: 0;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 0;
+  min-height: 100vh;
+}
+
+body.org-dashboard-layout.org-authenticated .org-dashboard-top {
+  grid-column: 2;
+  padding: 0.86rem 0.9rem 0.42rem;
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-tab-strip {
+  grid-column: 1;
+  grid-row: 1 / span 20;
+  display: grid;
+  align-content: start;
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  border-radius: 0;
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 0;
+  padding: 0.9rem 0.62rem;
+  overflow: visible;
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-nav-head {
+  display: grid;
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-nav-group {
+  display: block;
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-tab-btn {
+  width: 100%;
+  flex: initial;
+}
+
+body.org-dashboard-layout.org-authenticated .org-panel-section {
+  grid-column: 2;
+  margin: 0 0.9rem 0.82rem;
+}
+
+body.org-dashboard-layout.org-authenticated .org-access-state {
+  position: fixed;
+  right: 0.95rem;
+  top: 0.9rem;
+  z-index: 60;
+  width: min(460px, calc(100% - 1.2rem));
+  border: 1px solid rgba(228, 149, 255, 0.3);
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  background: rgba(11, 4, 22, 0.86);
+  backdrop-filter: blur(2px);
+}
+
+body.org-dashboard-layout.org-authenticated .org-access-logout {
+  position: fixed;
+  right: 0.95rem;
+  top: 4.2rem;
+  z-index: 60;
+  width: auto;
+}
+
 .org-role-chip {
   border: 1px solid rgba(201, 236, 255, 0.45);
   border-radius: 999px;
