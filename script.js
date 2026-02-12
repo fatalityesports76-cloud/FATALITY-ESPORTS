@@ -2825,6 +2825,12 @@ function initOrgAccess() {
     }
 
     const canSeeTemporaryPassword = isApprovalRole(currentSession?.role);
+    const usersList = Array.isArray(body.users) ? body.users : [];
+    const meUserNumber = String(body?.me?.userNumber || "");
+    memberDirectorySnapshot = [...usersList];
+    if (body?.me && meUserNumber && !memberDirectorySnapshot.some((item) => String(item.userNumber || "") === meUserNumber)) {
+      memberDirectorySnapshot.unshift(body.me);
+    }
 
     renderMemberDataList(
       orgMemberSelfList,
@@ -2864,7 +2870,7 @@ function initOrgAccess() {
 
     renderMemberDataList(
       orgMemberUsersList,
-      body.users || [],
+      usersList,
       (item) => {
         const fields = [
           ["Credencial", item.credentialNumber || item.userNumber || "-"],
@@ -2949,6 +2955,8 @@ function initOrgAccess() {
       ],
       "Nenhum pré-cadastro do formulário encontrado."
     );
+
+    refreshMemberProfileSelector();
   }
 
   async function refreshOwnerRequests() {
