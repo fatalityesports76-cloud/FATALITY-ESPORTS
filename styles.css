@@ -952,6 +952,197 @@ body.org-dashboard-layout .org-dashboard-top {
   font-size: 0.58rem;
 }
 
+.org-enterprise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.48rem;
+}
+
+.org-enterprise-card {
+  border: 1px solid rgba(229, 152, 255, 0.24);
+  border-radius: 12px;
+  padding: 0.56rem;
+  background:
+    radial-gradient(120% 90% at 96% 4%, rgba(255, 222, 255, 0.12), transparent 56%),
+    linear-gradient(152deg, rgba(21, 8, 39, 0.92), rgba(9, 3, 20, 0.94));
+  box-shadow:
+    inset 0 0 0 1px rgba(248, 201, 255, 0.04),
+    0 0 18px rgba(181, 78, 243, 0.12);
+}
+
+.org-enterprise-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.org-enterprise-stamp {
+  border: 1px solid rgba(225, 145, 255, 0.38);
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  background: rgba(18, 8, 34, 0.86);
+  color: #f4d6ff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-heading);
+  font-size: 0.52rem;
+}
+
+.org-enterprise-radar-list {
+  margin-top: 0.4rem;
+  display: grid;
+  gap: 0.36rem;
+}
+
+.org-enterprise-radar-row {
+  display: grid;
+  grid-template-columns: minmax(115px, 1fr) minmax(0, 1.4fr) auto;
+  align-items: center;
+  gap: 0.36rem;
+}
+
+.org-enterprise-radar-row p {
+  margin: 0;
+  color: #e8cdfa;
+  font-size: 0.72rem;
+}
+
+.org-enterprise-radar-row strong {
+  color: #ffe6ff;
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+}
+
+.org-enterprise-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(243, 190, 255, 0.14);
+  overflow: hidden;
+}
+
+.org-enterprise-progress-fill {
+  display: block;
+  height: 100%;
+  width: 8%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(246, 186, 255, 0.95), rgba(158, 83, 236, 0.95));
+  box-shadow: 0 0 14px rgba(188, 96, 255, 0.34);
+  transition: width 0.46s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.org-enterprise-progress-fill.prog-0 {
+  width: 8%;
+}
+
+.org-enterprise-progress-fill.prog-1 {
+  width: 12%;
+}
+
+.org-enterprise-progress-fill.prog-2 {
+  width: 20%;
+}
+
+.org-enterprise-progress-fill.prog-3 {
+  width: 30%;
+}
+
+.org-enterprise-progress-fill.prog-4 {
+  width: 40%;
+}
+
+.org-enterprise-progress-fill.prog-5 {
+  width: 50%;
+}
+
+.org-enterprise-progress-fill.prog-6 {
+  width: 60%;
+}
+
+.org-enterprise-progress-fill.prog-7 {
+  width: 70%;
+}
+
+.org-enterprise-progress-fill.prog-8 {
+  width: 80%;
+}
+
+.org-enterprise-progress-fill.prog-9 {
+  width: 90%;
+}
+
+.org-enterprise-progress-fill.prog-10 {
+  width: 100%;
+}
+
+.org-enterprise-alert-list {
+  margin: 0.38rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.34rem;
+}
+
+.org-enterprise-alert {
+  border: 1px solid rgba(224, 145, 255, 0.24);
+  border-radius: 10px;
+  padding: 0.38rem 0.44rem;
+  background: rgba(11, 5, 21, 0.74);
+  display: grid;
+  gap: 0.12rem;
+}
+
+.org-enterprise-alert strong {
+  color: #ffe6ff;
+  font-size: 0.72rem;
+}
+
+.org-enterprise-alert span {
+  color: #e6cef7;
+  font-size: 0.68rem;
+}
+
+.org-enterprise-alert.is-critical {
+  border-color: rgba(255, 130, 167, 0.5);
+}
+
+.org-enterprise-alert.is-warning {
+  border-color: rgba(255, 205, 132, 0.48);
+}
+
+.org-enterprise-alert.is-success {
+  border-color: rgba(145, 255, 181, 0.48);
+}
+
+.org-enterprise-actions {
+  margin-top: 0.42rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.34rem;
+}
+
+.org-enterprise-actions .btn {
+  width: 100%;
+  padding: 0.44rem 0.5rem;
+  font-size: 0.66rem;
+}
+
+.org-enterprise-pulse {
+  margin-top: 0.42rem;
+  display: grid;
+  gap: 0.22rem;
+}
+
+.org-enterprise-pulse p {
+  margin: 0;
+  color: #f0dcff;
+  font-size: 0.73rem;
+}
+
+.org-enterprise-pulse strong {
+  color: #f9e8ff;
+}
+
 .org-dashboard-table-wrap tbody.is-refreshing tr.org-dashboard-row-enter {
   animation: orgDashboardRowIn 0.42s ease both;
 }
