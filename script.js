@@ -1859,17 +1859,58 @@ function initOrgAccess() {
     };
   }
 
-  function buildHeroTrendPoints(summary) {
+  function stopDashboardHeroTrendAnimation() {
+    if (!dashboardHeroTrendAnimationFrame) {
+      return;
+    }
+    window.cancelAnimationFrame(dashboardHeroTrendAnimationFrame);
+    dashboardHeroTrendAnimationFrame = null;
+  }
+
+  function buildHeroTrendValues(summary) {
+    const maxPoints = 8;
     const trend = Array.isArray(summary?.trend) ? summary.trend : [];
-    const values = trend
+    let values = trend
       .map((item) => normalizePercentValue(item?.percent))
-      .filter((value) => Number.isFinite(value));
+      .filter((value) => Number.isFinite(value))
+      .slice(-maxPoints);
 
     if (values.length === 0) {
-      values.push(0, 0);
-    } else if (values.length === 1) {
-      values.push(values[0]);
+      values = [0];
     }
+
+    while (values.length < maxPoints) {
+      values.unshift(values[0]);
+    }
+
+    return values.map((value) => normalizePercentValue(value));
+  }
+
+  function heroPointsToPolyline(points) {
+    return points.map((point) => `${point.x},${point.y}`).join(" ");
+  }
+
+  function heroPointsToAreaPath(points, baseY = 142) {
+    return `M ${points[0].x} ${baseY} L ${points
+      .map((point) => `${point.x} ${point.y}`)
+      .join(" L ")} L ${points[points.length - 1].x} ${baseY} Z`;
+  }
+
+  function applyHeroTrendPoints(points) {
+    if (!orgHeroLinePath || !orgHeroLineArea || !Array.isArray(points) || points.length === 0) {
+      return;
+    }
+    orgHeroLinePath.setAttribute("points", heroPointsToPolyline(points));
+    orgHeroLineArea.setAttribute("d", heroPointsToAreaPath(points));
+  }
+
+  function easeOutCubic(value) {
+    const clamped = Math.min(1, Math.max(0, value));
+    return 1 - Math.pow(1 - clamped, 3);
+  }
+
+  function buildHeroTrendPoints(summary) {
+    const values = buildHeroTrendValues(summary);
 
     const minX = 18;
     const maxX = 384;
@@ -1888,12 +1929,11 @@ function initOrgAccess() {
       };
     });
 
-    const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
-    const areaPath = `M ${points[0].x} ${maxY} L ${points
-      .map((point) => `${point.x} ${point.y}`)
-      .join(" L ")} L ${points[points.length - 1].x} ${maxY} Z`;
+    const polyline = heroPointsToPolyline(points);
+    const areaPath = heroPointsToAreaPath(points, maxY);
 
     return {
+      points,
       areaPath,
       polyline
     };
@@ -1904,9 +1944,59 @@ function initOrgAccess() {
       return;
     }
 
-    const points = buildHeroTrendPoints(summary);
-    orgHeroLinePath.setAttribute("points", points.polyline);
-    orgHeroLineArea.setAttribute("d", points.areaPath);
+    const trendData = buildHeroTrendPoints(summary);
+    if (!trendData || !Array.isArray(trendData.points) || trendData.points.length === 0) {
+      return;
+    }
+
+    if (dashboardHeroTrendSignature === trendData.polyline) {
+      return;
+    }
+
+    const targetPoints = trendData.points.map((point) => ({ x: point.x, y: point.y }));
+    const hasCurrent =
+      Array.isArray(dashboardHeroTrendPoints) && dashboardHeroTrendPoints.length === targetPoints.length;
+
+    stopDashboardHeroTrendAnimation();
+
+    if (!hasCurrent || prefersReducedMotion) {
+      dashboardHeroTrendPoints = targetPoints;
+      dashboardHeroTrendSignature = trendData.polyline;
+      applyHeroTrendPoints(targetPoints);
+      return;
+    }
+
+    const startPoints = dashboardHeroTrendPoints.map((point) => ({ x: point.x, y: point.y }));
+    const startedAt = performance.now();
+    const duration = 520;
+
+    const animate = (now) => {
+      const elapsed = now - startedAt;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = easeOutCubic(progress);
+
+      const next = startPoints.map((point, index) => {
+        const target = targetPoints[index];
+        return {
+          x: Math.round((point.x + (target.x - point.x) * eased) * 10) / 10,
+          y: Math.round((point.y + (target.y - point.y) * eased) * 10) / 10
+        };
+      });
+
+      applyHeroTrendPoints(next);
+
+      if (progress < 1) {
+        dashboardHeroTrendAnimationFrame = window.requestAnimationFrame(animate);
+        return;
+      }
+
+      dashboardHeroTrendAnimationFrame = null;
+      dashboardHeroTrendPoints = targetPoints;
+      dashboardHeroTrendSignature = trendData.polyline;
+      applyHeroTrendPoints(targetPoints);
+    };
+
+    dashboardHeroTrendAnimationFrame = window.requestAnimationFrame(animate);
   }
 
   function renderDashboardHeroBars(summary) {
@@ -1943,7 +2033,6 @@ function initOrgAccess() {
       return;
     }
 
-    orgHeroTableBody.innerHTML = "";
     let rows = buildPerformanceRankingRows(boardData).slice(0, 5);
     if (rows.length === 0 && String(boardData?.mode || "") === "player" && boardData?.player) {
       const identity = String(boardData.player.fullName || boardData.player.inGameName || "").trim();
@@ -1962,6 +2051,19 @@ function initOrgAccess() {
       ];
     }
 
+    const signature = rows
+      .map((row) => {
+        const week = row.weekPercent === null || row.weekPercent === undefined ? "-" : row.weekPercent;
+        return `${row.userNumber}|${row.fullName}|${row.inGameName}|${week}|${row.overallPercent}`;
+      })
+      .join(";");
+    if (dashboardHeroTableSignature === signature) {
+      return;
+    }
+    dashboardHeroTableSignature = signature;
+
+    orgHeroTableBody.innerHTML = "";
+
     if (rows.length === 0) {
       const tr = document.createElement("tr");
       ["Sem dados", "-", "-", "-"].forEach((value) => {
@@ -1973,8 +2075,10 @@ function initOrgAccess() {
       return;
     }
 
-    rows.forEach((row) => {
+    rows.forEach((row, index) => {
       const tr = document.createElement("tr");
+      tr.className = "org-dashboard-row-enter";
+      tr.style.animationDelay = `${index * 42}ms`;
       const identity = row.fullName || row.inGameName || `Player ${row.userNumber}`;
       const week = row.weekPercent === null ? "-" : formatPercentValue(row.weekPercent);
       const overall = formatPercentValue(row.overallPercent);
@@ -1985,6 +2089,10 @@ function initOrgAccess() {
       });
       orgHeroTableBody.appendChild(tr);
     });
+
+    orgHeroTableBody.classList.remove("is-refreshing");
+    void orgHeroTableBody.offsetWidth;
+    orgHeroTableBody.classList.add("is-refreshing");
   }
 
   function updateDashboardHero() {
