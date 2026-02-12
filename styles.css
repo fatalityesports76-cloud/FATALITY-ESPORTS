@@ -4791,6 +4791,10 @@ body.mobile-performance .reveal.visible {
     gap: 0.2rem;
   }
 
+  .org-command-kpis {
+    grid-template-columns: 1fr;
+  }
+
   .brand-strip {
     flex-direction: column;
     align-items: flex-start;
