@@ -3225,6 +3225,16 @@ function initOrgAccess() {
     });
   });
 
+  orgPanelTabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const tabKey = String(button.dataset.orgPanelTab || "");
+      if (!tabKey || !currentSession) {
+        return;
+      }
+      setOrgPanelTab(tabKey, currentSession);
+    });
+  });
+
   orgLoginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
