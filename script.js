@@ -3141,6 +3141,11 @@ function initOrgAccess() {
       return;
     }
 
+    if (isOrgLoginPage) {
+      window.location.href = "painel.html";
+      return;
+    }
+
     const roleLabel = roleLabels[session.role] || "Membro";
     orgToggle.textContent = `${roleLabel} ${session.userNumber}`;
     orgToggle.classList.add("is-authenticated");
