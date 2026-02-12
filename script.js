@@ -850,6 +850,15 @@ function initOrgAccess() {
   const orgEnterprisePendingEmails = orgAccessRoot.querySelector("[data-org-enterprise-pending-emails]");
   const orgEnterpriseTopPlayer = orgAccessRoot.querySelector("[data-org-enterprise-top-player]");
   const orgEnterpriseTopScore = orgAccessRoot.querySelector("[data-org-enterprise-top-score]");
+  const orgCommandLastSync = orgAccessRoot.querySelector("[data-org-command-last-sync]");
+  const orgCommandReadiness = orgAccessRoot.querySelector("[data-org-command-readiness]");
+  const orgCommandRisk = orgAccessRoot.querySelector("[data-org-command-risk]");
+  const orgCommandWindow = orgAccessRoot.querySelector("[data-org-command-window]");
+  const orgCommandTimeline = orgAccessRoot.querySelector("[data-org-command-timeline]");
+  const orgCommandEmailGoal = orgAccessRoot.querySelector("[data-org-command-email-goal]");
+  const orgCommandApprovalGoal = orgAccessRoot.querySelector("[data-org-command-approval-goal]");
+  const orgCommandPerformanceGoal = orgAccessRoot.querySelector("[data-org-command-performance-goal]");
+  const orgCommandTopPerformer = orgAccessRoot.querySelector("[data-org-command-top-performer]");
   const orgQuickTabButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-quick-tab]"));
   const orgQuickActionButtons = Array.from(orgAccessRoot.querySelectorAll("[data-org-quick-action]"));
   const isOrgPage = orgAccessRoot.hasAttribute("data-org-page");
