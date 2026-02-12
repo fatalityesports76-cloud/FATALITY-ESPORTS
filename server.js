@@ -2967,6 +2967,11 @@ app.get(["/login", "/login.html"], (_req, res) => {
   res.sendFile(path.join(APP_DIR, "login.html"));
 });
 
+app.get(["/painel", "/painel.html"], (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.sendFile(path.join(APP_DIR, "painel.html"));
+});
+
 app.get(["/confirmar-email", "/confirmar-email.html"], (_req, res) => {
   res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(APP_DIR, "confirmar-email.html"));
