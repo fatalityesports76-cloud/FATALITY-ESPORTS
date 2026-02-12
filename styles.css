@@ -1149,6 +1149,109 @@ body.org-dashboard-layout .org-dashboard-top {
   color: #f9e8ff;
 }
 
+.org-command-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 0.48rem;
+}
+
+.org-command-card {
+  border: 1px solid rgba(229, 152, 255, 0.24);
+  border-radius: 12px;
+  padding: 0.56rem;
+  background:
+    radial-gradient(120% 90% at 96% 4%, rgba(255, 222, 255, 0.12), transparent 56%),
+    linear-gradient(152deg, rgba(21, 8, 39, 0.92), rgba(9, 3, 20, 0.94));
+  box-shadow:
+    inset 0 0 0 1px rgba(248, 201, 255, 0.04),
+    0 0 18px rgba(181, 78, 243, 0.12);
+}
+
+.org-command-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.34rem;
+}
+
+.org-command-kpis {
+  margin-top: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.34rem;
+}
+
+.org-command-kpi {
+  border: 1px solid rgba(230, 152, 255, 0.24);
+  border-radius: 10px;
+  padding: 0.34rem 0.38rem;
+  background: rgba(10, 4, 21, 0.56);
+  display: grid;
+  gap: 0.14rem;
+}
+
+.org-command-kpi span {
+  color: #e8cef8;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.52rem;
+}
+
+.org-command-kpi strong {
+  color: #ffe7ff;
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+}
+
+.org-command-timeline {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.28rem;
+}
+
+.org-command-timeline li {
+  border: 1px solid rgba(230, 150, 255, 0.24);
+  border-radius: 9px;
+  padding: 0.28rem 0.38rem;
+  background: rgba(12, 5, 24, 0.72);
+  color: #efd8ff;
+  font-size: 0.71rem;
+  line-height: 1.38;
+}
+
+.org-command-mission-list {
+  margin-top: 0.42rem;
+  display: grid;
+  gap: 0.32rem;
+}
+
+.org-command-mission {
+  border: 1px solid rgba(227, 146, 255, 0.24);
+  border-radius: 10px;
+  padding: 0.34rem 0.4rem;
+  background:
+    linear-gradient(145deg, rgba(25, 10, 44, 0.86), rgba(10, 4, 22, 0.9));
+  display: grid;
+  gap: 0.14rem;
+}
+
+.org-command-mission p {
+  margin: 0;
+  color: #e8cef8;
+  font-size: 0.7rem;
+}
+
+.org-command-mission strong {
+  color: #ffeaff;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+}
+
 .org-dashboard-table-wrap tbody.is-refreshing tr.org-dashboard-row-enter {
   animation: orgDashboardRowIn 0.42s ease both;
 }
