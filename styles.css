@@ -709,6 +709,13 @@ body.org-dashboard-layout .org-dashboard-top {
   gap: 0.32rem;
 }
 
+.org-dashboard-account-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.42rem;
+}
+
 .org-dashboard-status-pill {
   border: 1px solid rgba(235, 163, 255, 0.48);
   border-radius: 999px;
