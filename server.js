@@ -7,6 +7,7 @@ const path = require("path");
 
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const { z } = require("zod");
@@ -313,6 +314,17 @@ app.use((req, res, next) => {
 
 app.use(cookieParser());
 app.use(express.json({ limit: "24kb", strict: true, type: "application/json" }));
+app.use(
+  compression({
+    threshold: 1024,
+    filter: (req, res) => {
+      if (req.path === "/api/org/performance/events") {
+        return false;
+      }
+      return compression.filter(req, res);
+    }
+  })
+);
 
 const apiLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
